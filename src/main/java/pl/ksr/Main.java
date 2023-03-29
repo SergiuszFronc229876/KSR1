@@ -1,7 +1,13 @@
 package pl.ksr;
 
+import java.util.List;
+
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        ArticleReader reader = new ArticleReader();
+        List<Article> articles = reader.getArticles();
+        articles.forEach(article -> System.out.println(article.getTitle()));
+        System.out.println("Articles read: " + articles.size());
     }
 }
