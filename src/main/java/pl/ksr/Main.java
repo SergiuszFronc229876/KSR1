@@ -1,13 +1,19 @@
 package pl.ksr;
 
+import pl.ksr.model.Article;
+import pl.ksr.reader.ArticleReader;
+
 import java.util.List;
+
+import static com.typesafe.config.ConfigFactory.load;
 
 public class Main {
 
     public static void main(String[] args) {
-        ArticleReader reader = new ArticleReader();
+        AppConfig configuration = AppConfig.fromRootConfig(load());
+        ArticleReader reader = new ArticleReader(configuration.readerConfig());
         List<Article> articles = reader.getArticles();
-        articles.forEach(article -> System.out.println(article.getTitle()));
-        System.out.println("Articles read: " + articles.size());
+        System.out.println(articles.get(0));
     }
+
 }
