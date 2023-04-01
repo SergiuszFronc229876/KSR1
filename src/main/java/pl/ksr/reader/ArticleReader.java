@@ -1,56 +1,29 @@
-package pl.ksr;
+package pl.ksr.reader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import pl.ksr.model.Article;
+import pl.ksr.model.ImmutableArticle;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ArticleReader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArticleReader.class);
 
-    private final String dirPath;
+    private final FileLoader fileLoader;
+    private final ArticleReaderConfig config;
 
-    public ArticleReader() {
-        this.dirPath = "src/main/resources/articles";
-    }
+    public ArticleReader(ArticleReaderConfig config) {
+        this.config = config;
+        this.fileLoader = new FileLoader(config.articlesDir(), config.stopWords());
 
-    public ArticleReader(String dirPath) {
-        this.dirPath = dirPath;
-    }
-
-    public List<String> readFiles() {
-        List<String> articleList = new ArrayList<>();
-
-        File directory = new File(dirPath);
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    articleList.add(readFile(file.getAbsolutePath()));
-                }
-            }
-        }
-        return articleList;
-    }
-
-    private String readFile(String filePath) {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
     }
 
     public List<Article> getArticles() {
-        List<String> contentOfArticles = readFiles();
+        List<String> contentOfArticles = fileLoader.readFiles();
         return getArticles(contentOfArticles);
     }
 
@@ -66,12 +39,11 @@ public class ArticleReader {
                 List<String> places = getPlaces(articleInString);
 
                 if (placesTagIsValid(places)) {
-                    Article art = new Article(places, getBody(articleInString), getTitle(articleInString));
-                    articles.add(art);
+                    articles.add(buildArticle(articleInString, places));
                 }
             }
         }
-
+        LOGGER.info("Articles read: {}", articles.size());
         return articles;
     }
 
@@ -110,18 +82,19 @@ public class ArticleReader {
         return places;
     }
 
-    private boolean placesTagIsValid(List<String> places) {
-        List<String> expectedCountries = new ArrayList<>(List.of("usa", "japan", "west-germany", "canada", "uk", "france"));
-        if (places.isEmpty()) {
-            return false;
-        }
-        if (places.size() > 1) return false;
-
-        for (String expectedCountry : expectedCountries) {
-            if (places.contains(expectedCountry)) {
-                return true;
-            }
+    private boolean placesTagIsValid(List<String> articlePlaces) {
+        if (articlePlaces.size() == 1) {
+            return config.places().contains(articlePlaces.get(0));
         }
         return false;
     }
+
+    private Article buildArticle(String articleInString, List<String> places) {
+        return ImmutableArticle.builder()
+                .title(getTitle(articleInString))
+                .addAllPlaces(places)
+                .body(getBody(articleInString))
+                .build();
+    }
+
 }
