@@ -1,5 +1,7 @@
 package pl.ksr.model;
 
+import org.w3c.dom.Text;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
@@ -21,6 +23,20 @@ public class FeatureVector implements Iterable<Feature> {
 
     public String getCountry() {
         return country;
+    }
+
+    public List<NumericalFeature> getNumericalFeatures() {
+        return featureList.stream()
+                .filter(feature -> feature.getClass() == NumericalFeature.class)
+                .map(NumericalFeature.class::cast)
+                .toList();
+    }
+
+    public List<TextFeature> getTextFeatures() {
+        return featureList.stream()
+                .filter(feature -> feature.getClass() == TextFeature.class)
+                .map(TextFeature.class::cast)
+                .toList();
     }
 
     @Override

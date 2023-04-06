@@ -2,7 +2,7 @@ package pl.ksr.model;
 
 public class NumericalFeature implements Feature {
 
-    private final float value;
+    private float value;
 
     public NumericalFeature(float value) {
         this.value = value;
@@ -10,5 +10,9 @@ public class NumericalFeature implements Feature {
 
     public float getValue() {
         return value;
+    }
+
+    public void setValue(float value) {
+        this.value = value;
     }
 }

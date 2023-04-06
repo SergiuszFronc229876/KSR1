@@ -2,7 +2,7 @@ package pl.ksr.model;
 
 public class TextFeature implements Feature {
 
-    private final String value;
+    private String value;
 
     public TextFeature(String value) {
         this.value = value;
@@ -10,5 +10,9 @@ public class TextFeature implements Feature {
 
     public String getValue() {
         return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

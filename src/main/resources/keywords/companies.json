@@ -1,0 +1,35 @@
+{
+  "west-germany": [
+    "BMW",
+    "Hugo Boss",
+    "Audi"
+  ],
+  "usa": [
+    "Microsoft",
+    "Ford",
+    "Chevrolet",
+    "Coca-Cola"
+  ],
+  "france": [
+    "Citroen",
+    "Carrefour",
+    "Peugeot",
+    "Renault"
+  ],
+  "uk": [
+    "The Financial Times",
+    "BBC",
+    "Rolls Royce",
+    "Unilever"
+  ],
+  "canada": [
+    "Canada Goose",
+    "Sorel",
+    "Viberg"
+  ],
+  "japan": [
+    "Honda",
+    "Hitachi",
+    "Fujitsu"
+  ]
+}

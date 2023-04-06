@@ -1,0 +1,29 @@
+{
+  "metric": [
+    "metr",
+    "m",
+    "km",
+    "cm",
+    "gram",
+    "g",
+    "kg",
+    "mg",
+    "litr",
+    "l",
+    "ml"
+  ],
+  "imperial": [
+    "inch",
+    "in",
+    "foot",
+    "ft",
+    "yard",
+    "yd",
+    "ounce",
+    "oz",
+    "pound",
+    "lb",
+    "galon",
+    "gal"
+  ]
+}

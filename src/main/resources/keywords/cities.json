@@ -1,0 +1,44 @@
+{
+  "west-germany": [
+    "Cologne",
+    "Dortmund",
+    "Dusseldorf",
+    "Essen",
+    "Mainz"
+  ],
+  "usa": [
+    "New York",
+    "Los Angeles",
+    "Chicago",
+    "Phoenix",
+    "San Diego"
+  ],
+  "france": [
+    "Paris",
+    "Marseille",
+    "Lyon",
+    "Toulouse",
+    "Nice"
+  ],
+  "uk": [
+    "London",
+    "Manchester",
+    "Glasgow",
+    "Liverpool",
+    "Newcastle"
+  ],
+  "canada": [
+    "Toronto",
+    "Montreal",
+    "Vancouver",
+    "Ottawa",
+    "Edmonton"
+  ],
+  "japan": [
+    "Tokyo",
+    "Yokohama",
+    "Osaka",
+    "Nagoya",
+    "Sapporo"
+  ]
+}
