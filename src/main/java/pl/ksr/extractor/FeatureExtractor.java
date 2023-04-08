@@ -3,7 +3,6 @@ package pl.ksr.extractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.ksr.model.*;
-import pl.ksr.reader.ArticleReader;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -11,7 +10,7 @@ import java.util.regex.Matcher;
 import static pl.ksr.extractor.FeatureExtractorUtils.getWordsFromText;
 
 public class FeatureExtractor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ArticleReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FeatureExtractor.class);
 
     private final FeatureExtractorConfig config;
 
@@ -94,13 +93,13 @@ public class FeatureExtractor {
                 index++;
             }
         }
-        LOGGER.info("Features Normalization Finished");
 
+        LOGGER.info("Features Normalization Finished");
     }
 
     // The country from which the currency appears first in the text
     private Feature extractCountryWithFirstCurrencyInArticle(Article article) {
-        String country = null;
+        String country = "";
         int earliestIndex = Integer.MAX_VALUE;
 
         for (Map.Entry<String, List<String>> entry : config.currencyDictionary().entrySet()) {
@@ -120,7 +119,7 @@ public class FeatureExtractor {
 
     // Country from which one of the names from the list of famous people from that country occurs most often
     private Feature extractCountryWithMostOccurredName(Article article) {
-        String country = null;
+        String country = "";
         int foundedMaxOccurrences = 0;
 
         for (Map.Entry<String, List<String>> entry : config.namesDictionary().entrySet()) {
@@ -163,7 +162,7 @@ public class FeatureExtractor {
 
     // The country from which the company first appears in the text
     private Feature extractCountryWithFirstCompanyInArticle(Article article) {
-        String country = null;
+        String country = "";
         int earliestIndex = Integer.MAX_VALUE;
 
         for (Map.Entry<String, List<String>> entry : config.companyDictionary().entrySet()) {
@@ -251,7 +250,7 @@ public class FeatureExtractor {
 
     // The first occurring unit of measurement in the text
     private Feature extractFirstOccurringUnit(Article article) {
-        String unit = null;
+        String unit = "";
         int earliestIndex = Integer.MAX_VALUE;
 
         for (Map.Entry<String, List<String>> entry : config.measurementUnitsDictionary().entrySet()) {
