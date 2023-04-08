@@ -32,8 +32,9 @@ public class FeatureExtractorTest {
     @Test
     public void featureExtractionBeforeNormalisationTest() {
         List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
+        FeatureVector vector1 = featureVectors.get(1);
 
-        FeatureVector vector1 = featureVectors.get(0);
+
         assertEquals("usa", ((TextFeature) vector1.getFeature(0)).getValue()); // 1
         assertEquals("usa", ((TextFeature) vector1.getFeature(1)).getValue()); // 2
         assertEquals("usa", ((TextFeature) vector1.getFeature(2)).getValue()); // 3
@@ -49,9 +50,9 @@ public class FeatureExtractorTest {
         assertEquals("usa", ((TextFeature) vector1.getFeature(10)).getValue()); // 6
         assertEquals("usa", ((TextFeature) vector1.getFeature(11)).getValue()); // 7
         assertEquals(39, ((NumericalFeature) vector1.getFeature(12)).getValue()); // 8
-        assertEquals("usa", ((TextFeature) vector1.getFeature(13)).getValue()); // 9
+        assertEquals("inch", ((TextFeature) vector1.getFeature(13)).getValue()); // 9
 
-        assertEquals(3, ((NumericalFeature) vector1.getFeature(14)).getValue()); // 10_M
+        assertEquals(1, ((NumericalFeature) vector1.getFeature(14)).getValue()); // 10_M
         assertEquals(6, ((NumericalFeature) vector1.getFeature(15)).getValue()); // 10_I
     }
 
@@ -60,7 +61,7 @@ public class FeatureExtractorTest {
         List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
         featureExtractor.normaliseFeatures(featureVectors);
 
-        FeatureVector vector1 = featureVectors.get(0);
+        FeatureVector vector1 = featureVectors.get(1);
         assertEquals("usa", ((TextFeature) vector1.getFeature(0)).getValue()); // 1
         assertEquals("usa", ((TextFeature) vector1.getFeature(1)).getValue()); // 2
         assertEquals("usa", ((TextFeature) vector1.getFeature(2)).getValue()); // 3
@@ -76,7 +77,7 @@ public class FeatureExtractorTest {
         assertEquals("usa", ((TextFeature) vector1.getFeature(10)).getValue()); // 6
         assertEquals("usa", ((TextFeature) vector1.getFeature(11)).getValue()); // 7
 //        assertEquals(0, ((NumericalFeature)vector1.getFeature(12)).getValue()); // 8
-        assertEquals("usa", ((TextFeature) vector1.getFeature(13)).getValue()); // 9
+        assertEquals("inch", ((TextFeature) vector1.getFeature(13)).getValue()); // 9
 
 //        assertEquals(4, ((NumericalFeature)vector1.getFeature(14)).getValue()); // 10_M
 //        assertEquals(3, ((NumericalFeature)vector1.getFeature(15)).getValue()); // 10_I
