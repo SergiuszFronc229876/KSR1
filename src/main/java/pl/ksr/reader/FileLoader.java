@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FileLoader {
@@ -15,14 +16,16 @@ public class FileLoader {
     public List<String> readFiles(String dirPaths) {
         List<String> articleList = new ArrayList<>();
 
-        for (File file : getFilesList(new File(dirPaths))) {
+        List<File> files = Arrays.asList(getFilesList(new File(dirPaths)));
+        files.parallelStream().forEach(file -> {
             try {
+                LOGGER.info("Reading File: {}", file.getName());
                 articleList.add(readFile(file.getAbsolutePath()));
             } catch (IOException e) {
                 LOGGER.error("Could not read files from given directory path: {}", dirPaths);
                 throw new RuntimeException(e);
             }
-        }
+        });
         return articleList;
     }
 

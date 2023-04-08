@@ -1,32 +1,28 @@
-package pl.ksr;
+package pl.ksr.extractor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.ksr.model.*;
-import pl.ksr.reader.JsonReader;
+import pl.ksr.reader.ArticleReader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class FeatureExtractor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArticleReader.class);
 
-    private final Dictionary currencyDictionary;
-    private final Dictionary cityDictionary;
-    private final Dictionary companyDictionary;
-    private final Dictionary namesDictionary;
-    private final Dictionary measurementUnitsDictionary;
+    private final FeatureExtractorConfig config;
 
-    public FeatureExtractor() {
-        this.currencyDictionary = new Dictionary(JsonReader.readJsonIntoMap("src/main/resources/keywords/currencies.json"));
-        this.cityDictionary = new Dictionary(JsonReader.readJsonIntoMap("src/main/resources/keywords/cities.json"));
-        this.companyDictionary = new Dictionary(JsonReader.readJsonIntoMap("src/main/resources/keywords/companies.json"));
-        this.namesDictionary = new Dictionary(JsonReader.readJsonIntoMap("src/main/resources/keywords/famousPeople.json"));
-        this.measurementUnitsDictionary = new Dictionary(JsonReader.readJsonIntoMap("src/main/resources/keywords/measurementUnits.json"));
+    public FeatureExtractor(FeatureExtractorConfig config) {
+        this.config = config;
     }
 
     public List<FeatureVector> extractFeatures(List<Article> articleList) {
         ArrayList<FeatureVector> featureVectors = new ArrayList<>();
+        LOGGER.info("Starting Features Extraction of {} articles", articleList.size());
 
-        for (var article : articleList) {
+        articleList.parallelStream().forEach(article -> {
             ArrayList<Feature> features = new ArrayList<>();
             features.add(extractFeature1(article));
             features.add(extractFeature2(article));
@@ -45,15 +41,21 @@ public class FeatureExtractor {
             features.add(extractFeature10(article, "metric"));
             features.add(extractFeature10(article, "imperial"));
             FeatureVector featureVector = new FeatureVector(features, article.getPlace());
-            featureVectors.add(featureVector);
-        }
+            synchronized (featureVectors) {
+                LOGGER.info(article.getPlace());
+                featureVectors.add(featureVector);
+            }
+        });
 
+        LOGGER.info("Features Extraction Finished");
         return featureVectors;
     }
 
     public void normaliseFeatures(List<FeatureVector> featureVectorList) {
         List<Float> minValues = new ArrayList<>();
         List<Float> maxValues = new ArrayList<>();
+
+        LOGGER.info("Starting Features Normalization of {} feature vectors", featureVectorList.size());
 
         // Get min and max value of each feature
         for (FeatureVector featureList : featureVectorList) {
@@ -92,6 +94,8 @@ public class FeatureExtractor {
                 index++;
             }
         }
+        LOGGER.info("Features Normalization Finished");
+
     }
 
     // The country from which the currency appears first in the text
@@ -100,7 +104,7 @@ public class FeatureExtractor {
         int earliestIndex = Integer.MAX_VALUE;
 
         for (String word : article.getText()) {
-            for (Map.Entry<String, List<String>> entry : currencyDictionary.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : config.currencyDictionary().entrySet()) {
                 List<String> stringList = entry.getValue();
                 if (stringList.contains(word)) {
                     int index = article.getText().indexOf(word);
@@ -126,7 +130,7 @@ public class FeatureExtractor {
         int earliestIndex = Integer.MAX_VALUE;
 
         for (String word : article.getText()) {
-            for (Map.Entry<String, List<String>> entry : cityDictionary.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : config.cityDictionary().entrySet()) {
                 List<String> stringList = entry.getValue();
                 if (stringList.contains(word)) {
                     int index = article.getText().indexOf(word);
@@ -147,7 +151,7 @@ public class FeatureExtractor {
         int earliestIndex = Integer.MAX_VALUE;
 
         for (String word : article.getText()) {
-            for (Map.Entry<String, List<String>> entry : companyDictionary.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : config.companyDictionary().entrySet()) {
                 List<String> stringList = entry.getValue();
                 if (stringList.contains(word)) {
                     int index = article.getText().indexOf(word);
@@ -164,7 +168,7 @@ public class FeatureExtractor {
 
     // Number of occurrences of keywords that are city names from a dictionary of a given country
     private Feature extractFeature5(Article article, String country) {
-        List<String> keyWords = cityDictionary.getValues(country);
+        List<String> keyWords = config.cityDictionary().getValues(country);
 
         int occurrenceCount = 0;
         for (String word : article.getText()) {
@@ -198,7 +202,7 @@ public class FeatureExtractor {
 
     // Number of units of measurement occurring for a given measurement system
     private Feature extractFeature10(Article article, String unitSystem) {
-        List<String> keyWords = measurementUnitsDictionary.getValues(unitSystem);
+        List<String> keyWords = config.measurementUnitsDictionary().getValues(unitSystem);
 
         int unitCount = 0;
         for (String word : article.getText()) {
