@@ -1,7 +1,5 @@
 package pl.ksr.model;
 
-import org.w3c.dom.Text;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
@@ -23,6 +21,10 @@ public class FeatureVector implements Iterable<Feature> {
 
     public String getCountry() {
         return country;
+    }
+
+    public int size() {
+        return featureList.size();
     }
 
     public List<NumericalFeature> getNumericalFeatures() {
