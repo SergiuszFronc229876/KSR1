@@ -1,5 +1,6 @@
 package pl.ksr.reader;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.ksr.model.Article;
@@ -90,7 +91,7 @@ public class ArticleReader {
         combined.removeIf(String::isEmpty);
         return ImmutableArticle.builder()
                 .place(place)
-                .text(combined)
+                .text(StringUtils.join(combined, " "))
                 .build();
     }
 }

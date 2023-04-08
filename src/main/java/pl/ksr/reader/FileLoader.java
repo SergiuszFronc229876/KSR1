@@ -19,7 +19,7 @@ public class FileLoader {
         List<File> files = Arrays.asList(getFilesList(new File(dirPaths)));
         files.parallelStream().forEach(file -> {
             try {
-                LOGGER.info("Reading File: {}", file.getName());
+                LOGGER.debug("Reading File: {}", file.getName());
                 articleList.add(readFile(file.getAbsolutePath()));
             } catch (IOException e) {
                 LOGGER.error("Could not read files from given directory path: {}", dirPaths);
