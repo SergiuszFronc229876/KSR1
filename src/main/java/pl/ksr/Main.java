@@ -6,6 +6,7 @@ import pl.ksr.extractor.FeatureExtractor;
 import pl.ksr.metric.EuclideanMetric;
 import pl.ksr.metric.Metric;
 import pl.ksr.model.Article;
+import pl.ksr.model.Country;
 import pl.ksr.model.FeatureVector;
 import pl.ksr.reader.ArticleReader;
 
@@ -28,12 +29,12 @@ public class Main {
         featureExtractor.normaliseFeatures(featureVectors);
 
 
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals("usa")).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals("uk")).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals("canada")).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals("west-germany")).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals("japan")).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals("france")).toList().size());
+        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.USA)).toList().size());
+        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.UK)).toList().size());
+        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.Canada)).toList().size());
+        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.West_Germany)).toList().size());
+        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.Japan)).toList().size());
+        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.France)).toList().size());
 
 
         List<FeatureVector> teachingVectors = featureVectors.subList(0, (int) (featureVectors.size() * 0.5));
@@ -47,8 +48,8 @@ public class Main {
         toClassification.parallelStream().forEach(vector -> {
             count.incrementAndGet();
             LOGGER.info("Classification of vector number: {}", count);
-            String classify = KNN.classify(5, vector, teachingVectors, metric);
-            if (vector.getCountry().equals(classify)) {
+            Country classifiedClass = KNN.classify(5, vector, teachingVectors, metric);
+            if (vector.getCountry().equals(classifiedClass)) {
                 good.incrementAndGet();
             }
         });

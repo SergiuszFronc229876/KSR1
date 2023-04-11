@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 public class FeatureVector implements Iterable<Feature> {
 
     private final List<Feature> featureList;
-    private final String country;
+    private final Country country;
 
-    public FeatureVector(List<Feature> featureList, String country) {
+    public FeatureVector(List<Feature> featureList, Country country) {
         this.featureList = featureList;
         this.country = country;
     }
@@ -19,7 +19,7 @@ public class FeatureVector implements Iterable<Feature> {
         return featureList.get(index);
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 

@@ -28,19 +28,19 @@ public class FeatureExtractor {
             features.add(extractCountryWithMostOccurredName(article));
             features.add(extractCountryWithFirstCityInArticle(article));
             features.add(extractCountryWithFirstCompanyInArticle(article));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, "west-germany"));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, "usa"));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, "france"));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, "uk"));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, "canada"));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, "japan"));
+            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.West_Germany));
+            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.USA));
+            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.France));
+            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.UK));
+            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.Canada));
+            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.Japan));
             features.add(extractCountryWithTheHighestPercentageOfFamousPeopleAppearing(article));
             features.add(extractCountryWithTheHighestCurrencyOccurrences(article));
             features.add(extractTextLength(article));
             features.add(extractFirstOccurringUnit(article));
             features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "metric"));
             features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "imperial"));
-            syncFeatureVectors.add(new FeatureVector(features, article.getPlace()));
+            syncFeatureVectors.add(new FeatureVector(features, Country.getCountry(article.getPlace())));
         });
 
         LOGGER.info("Features Extraction Finished");
@@ -122,13 +122,13 @@ public class FeatureExtractor {
         for (Map.Entry<String, List<String>> entry : config.namesDictionary().entrySet()) {
             for (String keyWord : entry.getValue()) {
                 Matcher matcher = FeatureExtractorUtils.provideMatcher(article.getText(), keyWord);
-                int countOccurrenses = 0;
+                int countOccurrences = 0;
                 while (matcher.find()) {
-                    countOccurrenses++;
+                    countOccurrences++;
                 }
-                if (countOccurrenses > foundedMaxOccurrences) {
+                if (countOccurrences > foundedMaxOccurrences) {
                     country = entry.getKey();
-                    foundedMaxOccurrences = countOccurrenses;
+                    foundedMaxOccurrences = countOccurrences;
                 }
             }
         }
@@ -178,8 +178,8 @@ public class FeatureExtractor {
     }
 
     // 5. Number of occurrences of keywords that are city names from a dictionary of a given country
-    private Feature extractNumberOfCityOccurrencesFromGivenCountry(Article article, String country) {
-        List<String> keyWords = config.cityDictionary().getValues(country);
+    private Feature extractNumberOfCityOccurrencesFromGivenCountry(Article article, Country country) {
+        List<String> keyWords = config.cityDictionary().getValues(country.getCountryString());
         int occurrenceCount = 0;
 
         for (String keyWord : keyWords) {
