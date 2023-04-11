@@ -19,7 +19,7 @@ public class FeatureExtractor {
     }
 
     public List<FeatureVector> extractFeatures(List<Article> articleList) {
-        ArrayList<FeatureVector> featureVectors = new ArrayList<>();
+        List<FeatureVector> syncFeatureVectors = Collections.synchronizedList(new ArrayList<>());
         LOGGER.info("Starting Features Extraction of {} articles", articleList.size());
 
         articleList.parallelStream().forEach(article -> {
@@ -40,14 +40,11 @@ public class FeatureExtractor {
             features.add(extractFirstOccurringUnit(article));
             features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "metric"));
             features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "imperial"));
-            FeatureVector featureVector = new FeatureVector(features, article.getPlace());
-            synchronized (featureVector) {
-                featureVectors.add(featureVector);
-            }
+            syncFeatureVectors.add(new FeatureVector(features, article.getPlace()));
         });
 
         LOGGER.info("Features Extraction Finished");
-        return featureVectors;
+        return syncFeatureVectors;
     }
 
     public void normaliseFeatures(List<FeatureVector> featureVectorList) {
@@ -97,7 +94,7 @@ public class FeatureExtractor {
         LOGGER.info("Features Normalization Finished");
     }
 
-    // The country from which the currency appears first in the text
+    // 1. The country from which the currency appears first in the text
     private Feature extractCountryWithFirstCurrencyInArticle(Article article) {
         String country = "";
         int earliestIndex = Integer.MAX_VALUE;
@@ -117,7 +114,7 @@ public class FeatureExtractor {
         return new TextFeature(country);
     }
 
-    // Country from which one of the names from the list of famous people from that country occurs most often
+    // 2. Country from which one of the names from the list of famous people from that country occurs most often
     private Feature extractCountryWithMostOccurredName(Article article) {
         String country = "";
         int foundedMaxOccurrences = 0;
@@ -139,7 +136,7 @@ public class FeatureExtractor {
         return new TextFeature(country);
     }
 
-    // The country from which the city first appears in the text
+    // 3. The country from which the city first appears in the text
     private Feature extractCountryWithFirstCityInArticle(Article article) {
         String country = "";
         int earliestIndex = Integer.MAX_VALUE;
@@ -160,7 +157,7 @@ public class FeatureExtractor {
         return new TextFeature(country);
     }
 
-    // The country from which the company first appears in the text
+    // 4. The country from which the company first appears in the text
     private Feature extractCountryWithFirstCompanyInArticle(Article article) {
         String country = "";
         int earliestIndex = Integer.MAX_VALUE;
@@ -180,7 +177,7 @@ public class FeatureExtractor {
         return new TextFeature(country);
     }
 
-    // Number of occurrences of keywords that are city names from a dictionary of a given country
+    // 5. Number of occurrences of keywords that are city names from a dictionary of a given country
     private Feature extractNumberOfCityOccurrencesFromGivenCountry(Article article, String country) {
         List<String> keyWords = config.cityDictionary().getValues(country);
         int occurrenceCount = 0;
@@ -197,19 +194,19 @@ public class FeatureExtractor {
     }
 
 
-    // Country for which Percentage of occurrence of names of famous people from the country is the highest
+    // 6. Country for which Percentage of occurrence of names of famous people from the country is the highest
     private Feature extractCountryWithTheHighestPercentageOfFamousPeopleAppearing(Article article) {
         Map<String, Float> result = new HashMap<>();
 
         for (Map.Entry<String, List<String>> entry : config.namesDictionary().entrySet()) {
-            int countOccurrenses = 0;
+            int countOccurrences = 0;
             for (String keyWord : entry.getValue()) {
                 Matcher matcher = FeatureExtractorUtils.provideMatcher(article.getText(), keyWord);
                 while (matcher.find()) {
-                    countOccurrenses++;
+                    countOccurrences++;
                 }
             }
-            result.put(entry.getKey(), (float) (countOccurrenses / Arrays.stream(getWordsFromText(article)).count()));
+            result.put(entry.getKey(), (float) (countOccurrences / Arrays.stream(getWordsFromText(article)).count()));
         }
         LOGGER.debug("Percentage of Famous People Appearing result is: {}", result);
 
@@ -221,19 +218,19 @@ public class FeatureExtractor {
 
     }
 
-    // Country for which keywords from the currency dictionary occur most frequently
+    // 7. Country for which keywords from the currency dictionary occur most frequently
     private Feature extractCountryWithTheHighestCurrencyOccurrences(Article article) {
         Map<String, Integer> result = new HashMap<>();
 
         for (Map.Entry<String, List<String>> entry : config.currencyDictionary().entrySet()) {
-            int countOccurrenses = 0;
+            int countOccurrences = 0;
             for (String keyWord : entry.getValue()) {
                 Matcher matcher = FeatureExtractorUtils.provideMatcher(article.getText(), keyWord);
                 while (matcher.find()) {
-                    countOccurrenses++;
+                    countOccurrences++;
                 }
             }
-            result.put(entry.getKey(), countOccurrenses);
+            result.put(entry.getKey(), countOccurrences);
         }
         LOGGER.debug("Currency occurrences result is: {}", result);
         return result.entrySet()
@@ -243,12 +240,12 @@ public class FeatureExtractor {
                 .orElseGet(() -> new TextFeature("Double Result"));
     }
 
-    // Number of words in the text
+    // 8. Number of words in the text
     private Feature extractTextLength(Article article) {
         return new NumericalFeature(getWordsFromText(article).length);
     }
 
-    // The first occurring unit of measurement in the text
+    // 9. The first occurring unit of measurement in the text
     private Feature extractFirstOccurringUnit(Article article) {
         String unit = "";
         int earliestIndex = Integer.MAX_VALUE;
@@ -271,18 +268,17 @@ public class FeatureExtractor {
         return new TextFeature(unit);
     }
 
-    // Number of units of measurement occurring for a given measurement system
+    // 10. Number of units of measurement occurring for a given measurement system
     private Feature extractNumberOfUnitsOccurrencesFromUnitSystem(Article article, String unitSystem) {
         List<String> keyWords = config.measurementUnitsDictionary().getValues(unitSystem);
-        int countOccurrenses = 0;
+        int countOccurrences = 0;
 
         for (String keyWord : keyWords) {
             Matcher matcher = FeatureExtractorUtils.provideMatcher(article.getText(), keyWord);
             while (matcher.find()) {
-                countOccurrenses++;
+                countOccurrences++;
             }
         }
-        return new NumericalFeature(countOccurrenses);
+        return new NumericalFeature(countOccurrences);
     }
-
 }

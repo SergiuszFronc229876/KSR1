@@ -1,29 +1,32 @@
 package pl.ksr;
 
-import pl.ksr.metrics.Metric;
+import pl.ksr.metric.Metric;
 import pl.ksr.model.FeatureVector;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class KNN {
 
     public static String classify(int k, FeatureVector vector, List<FeatureVector> teachingVectors, Metric metric) {
+
         // Calculate distances between the input vector and all the vectors in the teaching list
-        Map<FeatureVector, Float> distances = new HashMap<>();
-        for (FeatureVector teachingVector : teachingVectors) {
+        ConcurrentMap<FeatureVector, Float> distances = new ConcurrentHashMap<>();
+        teachingVectors.parallelStream().forEach(teachingVector -> {
             float distance = metric.calculateDistance(vector, teachingVector);
             distances.put(teachingVector, distance);
-        }
+        });
 
         // Sort the classes by increasing distance to the input vector
         List<FeatureVector> sortedFeatures = new ArrayList<>(distances.keySet());
         sortedFeatures.sort((c1, c2) -> Float.compare(distances.get(c1), distances.get(c2)));
 
         // Count the k nearest neighbors for each class
-        Map<String, Integer> counts = new HashMap<>();
+        Map<String, Integer> counts = new LinkedHashMap<>();
         for (int i = 0; i < k && i < sortedFeatures.size(); i++) {
-            String clazz = sortedFeatures.get(i).getCountry();
-            counts.put(clazz, counts.getOrDefault(clazz, 0) + 1);
+            String country = sortedFeatures.get(i).getCountry();
+            counts.put(country, counts.getOrDefault(country, 0) + 1);
         }
 
         // Find the class with the highest count

@@ -1,4 +1,4 @@
-package pl.ksr.metrics;
+package pl.ksr.metric;
 
 import pl.ksr.model.FeatureVector;
 

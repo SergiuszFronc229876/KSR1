@@ -1,8 +1,8 @@
 package pl.ksr;
 
 import org.junit.jupiter.api.Test;
-import pl.ksr.metrics.EuclideanMetric;
-import pl.ksr.metrics.Metric;
+import pl.ksr.metric.EuclideanMetric;
+import pl.ksr.metric.Metric;
 import pl.ksr.model.FeatureVector;
 import pl.ksr.model.NumericalFeature;
 import pl.ksr.model.TextFeature;

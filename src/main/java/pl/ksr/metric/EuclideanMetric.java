@@ -1,26 +1,28 @@
-package pl.ksr.metrics;
+package pl.ksr.metric;
 
 import pl.ksr.model.Feature;
 import pl.ksr.model.FeatureVector;
 import pl.ksr.model.NumericalFeature;
 import pl.ksr.model.TextFeature;
 
-public class ManhattanMetric implements Metric {
+public class EuclideanMetric implements Metric {
     @Override
     public float calculateDistance(FeatureVector vector1, FeatureVector vector2) {
         float distance = 0f;
 
         for (int i = 0; i < vector1.size(); i++) {
             Feature feature1 = vector1.getFeature(i);
-            Feature feature2 = vector1.getFeature(i);
+            Feature feature2 = vector2.getFeature(i);
 
+            float v;
             if (feature1.getClass() == NumericalFeature.class) {
-                distance += ((NumericalFeature) feature1).getValue() - ((NumericalFeature) feature2).getValue();
+                v = ((NumericalFeature) feature1).getValue() - ((NumericalFeature) feature2).getValue();
             } else {
-                distance += 1 - trigram(((TextFeature) feature1).getValue(), ((TextFeature) feature2).getValue());
+                v = 1 - trigram(((TextFeature) feature1).getValue(), ((TextFeature) feature2).getValue());
             }
+            distance += v * v;
         }
 
-        return distance;
+        return (float) Math.sqrt(distance);
     }
 }

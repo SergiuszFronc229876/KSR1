@@ -1,31 +1,26 @@
-package pl.ksr.metrics;
+package pl.ksr.metric;
 
 import pl.ksr.model.Feature;
 import pl.ksr.model.FeatureVector;
 import pl.ksr.model.NumericalFeature;
 import pl.ksr.model.TextFeature;
 
-public class ChebyshevMetric implements Metric {
+public class ManhattanMetric implements Metric {
     @Override
     public float calculateDistance(FeatureVector vector1, FeatureVector vector2) {
-        float maxValue = Float.MIN_VALUE;
+        float distance = 0f;
 
         for (int i = 0; i < vector1.size(); i++) {
             Feature feature1 = vector1.getFeature(i);
             Feature feature2 = vector1.getFeature(i);
 
-            float v;
             if (feature1.getClass() == NumericalFeature.class) {
-                v = ((NumericalFeature) feature1).getValue() - ((NumericalFeature) feature2).getValue();
-                v = Math.abs(v);
+                distance += ((NumericalFeature) feature1).getValue() - ((NumericalFeature) feature2).getValue();
             } else {
-                v = 1 - trigram(((TextFeature) feature1).getValue(), ((TextFeature) feature2).getValue());
-            }
-            if (v > maxValue) {
-                maxValue = v;
+                distance += 1 - trigram(((TextFeature) feature1).getValue(), ((TextFeature) feature2).getValue());
             }
         }
 
-        return maxValue;
+        return distance;
     }
 }
