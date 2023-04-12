@@ -2,6 +2,8 @@ package pl.ksr;
 
 import org.junit.jupiter.api.Test;
 import pl.ksr.model.Country;
+import pl.ksr.qualificationQuality.ClassificationQuality;
+import pl.ksr.qualificationQuality.ConfusionMatrix;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
