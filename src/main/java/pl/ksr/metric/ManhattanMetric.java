@@ -12,7 +12,7 @@ public class ManhattanMetric implements Metric {
 
         for (int i = 0; i < vector1.size(); i++) {
             Feature feature1 = vector1.getFeature(i);
-            Feature feature2 = vector1.getFeature(i);
+            Feature feature2 = vector2.getFeature(i);
 
             if (feature1.getClass() == NumericalFeature.class) {
                 float value = ((NumericalFeature) feature1).getValue() - ((NumericalFeature) feature2).getValue();

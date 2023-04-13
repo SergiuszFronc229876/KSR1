@@ -29,25 +29,10 @@ public class Main {
         List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
         featureExtractor.normaliseFeatures(featureVectors);
 
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.USA)).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.UK)).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.Canada)).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.West_Germany)).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.Japan)).toList().size());
-        System.out.println(featureVectors.stream().filter(f -> f.getCountry().equals(Country.France)).toList().size());
-        System.out.println();
-
         List<FeatureVector> trainingVectors = featureVectors.subList(0, (int) (configuration.percentageOfTheTrainingSet() * featureVectors.size()));
         List<FeatureVector> testVectors = featureVectors.subList(trainingVectors.size(), featureVectors.size());
         Metric metric = configuration.metric();
         ConfusionMatrix confusionMatrix = new ConfusionMatrix(configuration.readerConfig().places().size());
-
-        System.out.println(trainingVectors.stream().filter(f -> f.getCountry().equals(Country.USA)).toList().size());
-        System.out.println(trainingVectors.stream().filter(f -> f.getCountry().equals(Country.UK)).toList().size());
-        System.out.println(trainingVectors.stream().filter(f -> f.getCountry().equals(Country.Canada)).toList().size());
-        System.out.println(trainingVectors.stream().filter(f -> f.getCountry().equals(Country.West_Germany)).toList().size());
-        System.out.println(trainingVectors.stream().filter(f -> f.getCountry().equals(Country.Japan)).toList().size());
-        System.out.println(trainingVectors.stream().filter(f -> f.getCountry().equals(Country.France)).toList().size());
 
 
         testVectors.parallelStream().forEach(vector -> {
@@ -74,6 +59,6 @@ public class Main {
         LOG.info("Miara F1 – dla całego zbioru dokumentów oraz dla wybranych klas: {}", ClassificationQuality.calculateF1(confusionMatrix));
 
         long stopTime = System.currentTimeMillis();
-        System.out.println("Time elapsed: " + (stopTime - startTime) / 1000 + " ms");
+        System.out.println("Time elapsed: " + (stopTime - startTime) / 1000 + " s");
     }
 }

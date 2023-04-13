@@ -34,6 +34,7 @@ public class FileLoader {
         try (BufferedReader reader = new BufferedReader(new java.io.FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                sb.append(" ");
                 sb.append(line);
             }
             return sb.toString();

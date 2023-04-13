@@ -1,35 +1,77 @@
 {
-  "west-germany": [
-    "BMW",
-    "Hugo Boss",
-    "Audi"
-  ],
   "usa": [
-    "Microsoft",
+    "Ford Motor Company",
     "Ford",
-    "Chevrolet",
-    "Coca-Cola"
-  ],
-  "france": [
-    "Citroen",
-    "Carrefour",
-    "Peugeot",
-    "Renault"
-  ],
-  "uk": [
-    "The Financial Times",
-    "BBC",
-    "Rolls Royce",
-    "Unilever"
-  ],
-  "canada": [
-    "Canada Goose",
-    "Sorel",
-    "Viberg"
+    "The Coca-Cola Company",
+    "Coca-Cola",
+    "IBM",
+    "General Electric",
+    "Procter & Gamble",
+    "General Motors",
+    "Boeing",
+    "AT&T",
+    "ExxonMobil",
+    "McDonald's",
+    "McDonald"
   ],
   "japan": [
+    "Toyota",
+    "Sony",
     "Honda",
+    "Panasonic",
+    "Mitsubishi",
+    "Mazda",
+    "Nissan",
+    "Fujitsu",
     "Hitachi",
-    "Fujitsu"
+    "Yamaha"
+  ],
+  "uk": [
+    "Rolls-Royce",
+    "Jaguar",
+    "British Airways",
+    "BP",
+    "Unilever",
+    "GlaxoSmithKline",
+    "Marks & Spencer",
+    "Imperial Chemical Industries",
+    "Vodafone",
+    "Tesco"
+  ],
+  "canada": [
+    "Bombardier",
+    "Manulife Financial",
+    "Royal Bank of Canada",
+    "Canadian National Railway",
+    "Canadian Pacific Railway",
+    "Bell Canada",
+    "Hudson's Bay Company",
+    "Imperial Oil",
+    "Cameco",
+    "Molson Coors Brewing Company"
+  ],
+  "west-germany": [
+    "Volkswagen",
+    "Bayer",
+    "BASF",
+    "Siemens",
+    "Daimler-Benz",
+    "Thyssen Krupp",
+    "BMW",
+    "Deutsche Bank",
+    "Henkel",
+    "Lufthansa"
+  ],
+  "france": [
+    "Peugeot",
+    "Renault",
+    "Total",
+    "L'Oréal",
+    "Groupe Danone",
+    "Air France",
+    "Michelin",
+    "AXA",
+    "Carrefour",
+    "Schneider Electric"
   ]
 }

@@ -8,11 +8,11 @@ import pl.ksr.model.TextFeature;
 public class ChebyshevMetric implements Metric {
     @Override
     public float calculateDistance(FeatureVector vector1, FeatureVector vector2) {
-        float maxValue = Float.MIN_VALUE;
+        float maxValue = 0f;
 
         for (int i = 0; i < vector1.size(); i++) {
             Feature feature1 = vector1.getFeature(i);
-            Feature feature2 = vector1.getFeature(i);
+            Feature feature2 = vector2.getFeature(i);
 
             float v;
             if (feature1.getClass() == NumericalFeature.class) {
