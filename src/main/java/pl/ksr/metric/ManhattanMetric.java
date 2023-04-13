@@ -15,7 +15,8 @@ public class ManhattanMetric implements Metric {
             Feature feature2 = vector1.getFeature(i);
 
             if (feature1.getClass() == NumericalFeature.class) {
-                distance += ((NumericalFeature) feature1).getValue() - ((NumericalFeature) feature2).getValue();
+                float value = ((NumericalFeature) feature1).getValue() - ((NumericalFeature) feature2).getValue();
+                distance += Math.abs(value);
             } else {
                 distance += 1 - trigram(((TextFeature) feature1).getValue(), ((TextFeature) feature2).getValue());
             }

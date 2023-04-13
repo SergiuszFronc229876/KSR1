@@ -77,7 +77,9 @@ public class ArticleReader {
 
     private boolean placesTagIsValid(List<String> articlePlaces) {
         if (articlePlaces.size() == 1) {
-            return config.places().contains(articlePlaces.get(0));
+            return config.places()
+                    .stream()
+                    .anyMatch(c -> c.getCountryString().equals(articlePlaces.get(0)));
         }
         return false;
     }

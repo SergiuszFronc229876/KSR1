@@ -1,5 +1,7 @@
 package pl.ksr.model;
 
+import java.util.Arrays;
+
 public enum Country {
     West_Germany("west-germany"),
     USA("usa"),
@@ -19,14 +21,9 @@ public enum Country {
     }
 
     public static Country getCountry(String countryName) {
-        return switch (countryName) {
-            case "west-germany" -> Country.West_Germany;
-            case "usa" -> Country.USA;
-            case "france" -> Country.France;
-            case "uk" -> Country.UK;
-            case "canada" -> Country.Canada;
-            case "japan" -> Country.Japan;
-            default -> throw new IllegalArgumentException(String.format("Couldn't resolve %s countryName", countryName));
-        };
+        return Arrays.stream(Country.values())
+                .filter(c -> c.countryString.equals(countryName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Couldn't resolve %s countryName", countryName)));
     }
 }
