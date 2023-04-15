@@ -5,6 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.ksr.extractor.FeatureExtractor;
+import pl.ksr.extractor.FeatureExtractorConfig;
+import pl.ksr.extractor.ImmutableFeatureExtractorConfig;
+import pl.ksr.metric.ChebyshevMetric;
+import pl.ksr.metric.EuclideanMetric;
+import pl.ksr.metric.ManhattanMetric;
 import pl.ksr.metric.Metric;
 import pl.ksr.model.Article;
 import pl.ksr.model.Country;
@@ -17,7 +22,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.typesafe.config.ConfigFactory.load;
 
@@ -27,7 +34,83 @@ public class Main {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
 
-        AppConfig configuration = AppConfig.fromRootConfig(load());
+        AppConfig config = AppConfig.fromRootConfig(load());
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("""
+                Wybierz metrykę [Domyślnie euklidesowa]:
+                1. Euklidesowa.
+                2. Miejska.
+                3. Czebyszewa""");
+
+        Metric metrik = switch (scanner.nextLine()) {
+            case "1", "" -> new EuclideanMetric();
+            case "2" -> new ManhattanMetric();
+            case "3" -> new ChebyshevMetric();
+            default -> throw new IllegalStateException("Nieprawidłowa wartość metryki.");
+        };
+
+        System.out.println("Podaj wartość k: [Domyślnie 5]");
+        String k = scanner.nextLine();
+        try {
+            if (k.isEmpty()) {
+                k = "5";
+            } else {
+                int val = Integer.parseInt(k);
+                if (val < 0) {
+                    throw new IllegalStateException("Nieprawidłowa wartość k");
+                }
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("Nieprawidłowa wartość k");
+        }
+
+        System.out.println("Podaj jaki procent artykułów ma zostać wektorami uczącymi [Domyślnie 50%]:");
+        String trainingSetPercentage = scanner.nextLine();
+        try {
+            if (trainingSetPercentage.isEmpty()) {
+                trainingSetPercentage = "50";
+            }
+            float val = Float.parseFloat(trainingSetPercentage);
+            if (val < 0 || val > 100) {
+                throw new IllegalStateException("Nieprawidłowa wartość procentu zbioru uczącego");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("Nieprawidłowa wartość procentu zbioru uczącego");
+        }
+
+        System.out.println("""
+                Podaj po przecinku numery cech które mają zostać wykorzystane [Domyślnie wszystkie]:
+                 1. Kraj dla którego słowo kluczowe ze słownika walut wystąpi jako pierwsze.
+                 2. Kraj dla które nazwisko znanej osoby ze słownika znanych osób wystąpi najwięcej razy.
+                 3  Kraj dla którego miasto ze słownika miast wystąpi jako pierwsze.
+                 4. Kraj dla którego nazwa firmy ze słownika firm wystąpi jako pierwsza.
+                 5. Kraj z którego występuje najwięcej miast słownika miast (6 wartości).
+                 6. Kraj z którego występuje najwięcej nazwisk ze słownika sławnych ludzi.
+                 7. Kraj z którego występuje najwięcej słów kluczowych ze słownika walut.
+                 8. Liczba słów w tekście.
+                 9. Pierwsza występująca jednostka miary
+                10. Liczba jednostek występujących dla systemu metrycznego i imperialnego (2 wartości).""");
+        String features = scanner.nextLine();
+        if (features.isEmpty()) {
+            features = "1,2,3,4,5,6,7,8,9,10";
+        } else {
+            if (!features.matches("^(10|[1-9])(,(10|[1-9]))*$")) {
+                throw new IllegalStateException("Nieprawidłowa wartość procentu zbioru uczącego");
+            }
+        }
+
+        FeatureExtractorConfig guiExtractorConfig = ImmutableFeatureExtractorConfig.copyOf(
+                config.featureExtractorConfig()).withFeatures(
+                        Arrays.stream(features.split(",")).map(Integer::parseInt).toList());
+
+        ImmutableAppConfig configuration = ImmutableAppConfig.copyOf(config)
+                .withMetric(metrik)
+                .withNeighbors(Integer.parseInt(k))
+                .withPercentageOfTheTrainingSet(Float.parseFloat(trainingSetPercentage))
+                .withFeatureExtractorConfig(guiExtractorConfig);
+
         LOG.debug("Config: {}", configuration);
 
         ArticleReader reader = new ArticleReader(configuration.readerConfig());
