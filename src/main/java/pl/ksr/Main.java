@@ -4,6 +4,8 @@ import com.opencsv.CSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.ksr.extractor.FeatureExtractor;
+import pl.ksr.extractor.FeatureExtractorConfig;
+import pl.ksr.extractor.ImmutableFeatureExtractorConfig;
 import pl.ksr.metric.Metric;
 import pl.ksr.model.Article;
 import pl.ksr.model.Country;
@@ -28,6 +30,11 @@ public class Main {
         long startTime = System.currentTimeMillis();
 
         AppConfig configuration = AppConfig.fromRootConfig(load());
+
+        FeatureExtractorConfig guiExtractorConfig = ImmutableFeatureExtractorConfig.copyOf(configuration.featureExtractorConfig()).withFeatures(List.of(1, 2, 3));
+        ImmutableAppConfig guiConfig = ImmutableAppConfig.copyOf(configuration).withPercentageOfTheTrainingSet(10f).withFeatureExtractorConfig(guiExtractorConfig);
+
+
         ArticleReader reader = new ArticleReader(configuration.readerConfig());
         FeatureExtractor featureExtractor = new FeatureExtractor(configuration.featureExtractorConfig());
 

@@ -20,7 +20,9 @@ public class FileLoader {
         files.parallelStream().forEach(file -> {
             try {
                 LOGGER.debug("Reading File: {}", file.getName());
-                articleList.add(readFile(file.getAbsolutePath()));
+                synchronized (articleList) {
+                    articleList.add(readFile(file.getAbsolutePath()));
+                }
             } catch (IOException e) {
                 LOGGER.error("Could not read files from given directory path: {}", dirPaths);
                 throw new RuntimeException(e);

@@ -5,6 +5,8 @@ import org.immutables.value.Value;
 import pl.ksr.model.Dictionary;
 import pl.ksr.reader.JsonReader;
 
+import java.util.List;
+
 @Value.Immutable
 public interface FeatureExtractorConfig {
     static FeatureExtractorConfig fromRootConfig(Config config) {
@@ -14,6 +16,7 @@ public interface FeatureExtractorConfig {
                 .companyDictionary(new Dictionary(JsonReader.readJsonIntoMap(config.getString("dictionaries.company-dir"))))
                 .namesDictionary(new Dictionary(JsonReader.readJsonIntoMap(config.getString("dictionaries.names-dir"))))
                 .measurementUnitsDictionary(new Dictionary(JsonReader.readJsonIntoMap(config.getString("dictionaries.units-dir"))))
+                .features(config.getStringList("features").stream().map(Integer::valueOf).toList())
                 .build();
     }
 
@@ -26,4 +29,6 @@ public interface FeatureExtractorConfig {
     Dictionary namesDictionary();
 
     Dictionary measurementUnitsDictionary();
+
+    List<Integer> features();
 }

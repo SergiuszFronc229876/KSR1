@@ -22,24 +22,33 @@ public class FeatureExtractor {
         List<FeatureVector> syncFeatureVectors = Collections.synchronizedList(new ArrayList<>());
         LOGGER.info("Starting Features Extraction of {} articles", articleList.size());
 
+
         articleList.parallelStream().forEach(article -> {
             ArrayList<Feature> features = new ArrayList<>();
-            features.add(extractCountryWithFirstCurrencyInArticle(article));
-            features.add(extractCountryWithMostOccurredName(article));
-            features.add(extractCountryWithFirstCityInArticle(article));
-            features.add(extractCountryWithFirstCompanyInArticle(article));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.West_Germany));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.USA));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.France));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.UK));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.Canada));
-            features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.Japan));
-            features.add(extractCountryWithTheHighestPercentageOfFamousPeopleAppearing(article));
-            features.add(extractCountryWithTheHighestCurrencyOccurrences(article));
-            features.add(extractTextLength(article));
-            features.add(extractFirstOccurringUnit(article));
-            features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "metric"));
-            features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "imperial"));
+            config.features().forEach(f -> {
+                switch (f) {
+                    case 1 -> features.add(extractCountryWithFirstCurrencyInArticle(article));
+                    case 2 -> features.add(extractCountryWithMostOccurredName(article));
+                    case 3 -> features.add(extractCountryWithFirstCityInArticle(article));
+                    case 4 -> features.add(extractCountryWithFirstCompanyInArticle(article));
+                    case 5 -> {
+                        features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.West_Germany));
+                        features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.USA));
+                        features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.France));
+                        features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.UK));
+                        features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.Canada));
+                        features.add(extractNumberOfCityOccurrencesFromGivenCountry(article, Country.Japan));
+                    }
+                    case 6 -> features.add(extractCountryWithTheHighestPercentageOfFamousPeopleAppearing(article));
+                    case 7 -> features.add(extractCountryWithTheHighestCurrencyOccurrences(article));
+                    case 8 -> features.add(extractTextLength(article));
+                    case 9 -> features.add(extractFirstOccurringUnit(article));
+                    case 10 -> {
+                        features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "metric"));
+                        features.add(extractNumberOfUnitsOccurrencesFromUnitSystem(article, "imperial"));
+                    }
+                }
+            });
             syncFeatureVectors.add(new FeatureVector(features, Country.getCountry(article.getPlace())));
         });
 
