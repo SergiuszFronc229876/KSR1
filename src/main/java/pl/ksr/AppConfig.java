@@ -16,7 +16,8 @@ public interface AppConfig {
                 .featureExtractorConfig(FeatureExtractorConfig.fromRootConfig(config.getConfig("feature-extractor")))
                 .percentageOfTheTrainingSet((float) config.getInt("percentageOfTheTrainingSet") / 100)
                 .neighbors(config.getInt("neighbors"))
-                .metric(BasicMetrics.getMetric(config.getString("metric")))
+                .metric(BasicMetrics.getMetric(config.getString("metric").trim()))
+                .csvDir(config.getString("csvDir"))
                 .build();
     }
 
@@ -29,4 +30,6 @@ public interface AppConfig {
     int neighbors();
 
     Metric metric();
+
+    String csvDir();
 }

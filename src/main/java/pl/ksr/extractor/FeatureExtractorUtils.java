@@ -11,7 +11,7 @@ public class FeatureExtractorUtils {
     }
 
     public static Matcher provideMatcher(String text, String keyWord) {
-        Pattern pattern = Pattern.compile("\\b" + keyWord + "\\b");
+        Pattern pattern = Pattern.compile("\\b" + keyWord.toLowerCase() + "\\b");
         return pattern.matcher(text);
     }
 }

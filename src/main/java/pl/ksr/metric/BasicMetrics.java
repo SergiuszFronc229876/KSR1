@@ -19,6 +19,6 @@ public enum BasicMetrics {
                 .filter(m -> m.name.equals(metricName))
                 .map(m -> m.metric)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Couldn't resolve %s metricName(Type: euclidean, chebyshev or manhattan)", metricName)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Couldn't resolve %s metricName (Type: euclidean, chebyshev or manhattan)", metricName)));
     }
 }

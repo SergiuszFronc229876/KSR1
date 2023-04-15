@@ -93,7 +93,7 @@ public class ArticleReader {
         combined.removeIf(String::isEmpty);
         return ImmutableArticle.builder()
                 .place(place)
-                .text(StringUtils.join(combined, " "))
+                .text(StringUtils.join(wordsFromBody, " ").replaceAll("<DATELINE>.*?</DATELINE>", " ").toLowerCase())
                 .build();
     }
 }
