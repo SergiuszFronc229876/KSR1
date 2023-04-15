@@ -108,7 +108,7 @@ public class Main {
             config = ImmutableAppConfig.copyOf(config)
                     .withMetric(metrik)
                     .withNeighbors(Integer.parseInt(k))
-                    .withPercentageOfTheTrainingSet(Float.parseFloat(trainingSetPercentage))
+                    .withPercentageOfTheTrainingSet(Float.parseFloat(trainingSetPercentage) / 100)
                     .withFeatureExtractorConfig(guiExtractorConfig);
         }
 
