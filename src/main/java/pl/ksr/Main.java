@@ -15,6 +15,7 @@ import pl.ksr.reader.ArticleReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,9 +94,10 @@ public class Main {
         LOG.info("Miara F1 – dla całego zbioru dokumentów oraz dla wybranych klas: {}", f1ForAll);
 
         long stopTime = System.currentTimeMillis();
-        System.out.println("Time elapsed: " + (stopTime - startTime) / 1000 + " s");
+        System.out.println("Time elapsed: " + (stopTime - startTime) / 1000f + " s");
 
         File file = new File(configuration.csvDir());
+        file.getParentFile().mkdirs();
         try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
             csvData.add(toSave.toArray(String[]::new));
             writer.writeAll(csvData);
