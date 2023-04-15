@@ -56,7 +56,6 @@
     "New Hampshire",
     "New Jersey",
     "New Mexico",
-    "New York",
     "North Carolina",
     "North Dakota",
     "Ohio",
@@ -95,7 +94,6 @@
     "South East",
     "South West",
     "Yorkshire and the Humber",
-    "London",
     "Birmingham",
     "Leeds",
     "Sheffield",
@@ -142,10 +140,7 @@
     "Saxony",
     "Saxony-Anhalt",
     "Schleswig-Holstein",
-    "Thuringia"
-  ],
-  "cities": [
-    "Berlin",
+    "Thuringia",
     "Bonn",
     "Bremen",
     "Cologne",

@@ -49,10 +49,10 @@ public class FeatureExtractorTest {
 
         assertEquals("usa", ((TextFeature) vector1.getFeature(10)).getValue()); // 6
         assertEquals("usa", ((TextFeature) vector1.getFeature(11)).getValue()); // 7
-        assertEquals(39, ((NumericalFeature) vector1.getFeature(12)).getValue()); // 8
+        assertEquals(43, ((NumericalFeature) vector1.getFeature(12)).getValue()); // 8
         assertEquals("inch", ((TextFeature) vector1.getFeature(13)).getValue()); // 9
 
-        assertEquals(1, ((NumericalFeature) vector1.getFeature(14)).getValue()); // 10_M
+        assertEquals(3, ((NumericalFeature) vector1.getFeature(14)).getValue()); // 10_M
         assertEquals(6, ((NumericalFeature) vector1.getFeature(15)).getValue()); // 10_I
     }
 

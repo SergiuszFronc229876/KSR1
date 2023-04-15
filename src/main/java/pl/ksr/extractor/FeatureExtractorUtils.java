@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class FeatureExtractorUtils {
     public static String[] getWordsFromText(Article article) {
-        return article.getText().split(" ");
+        return article.getText().trim().split("\\W+");
     }
 
     public static Matcher provideMatcher(String text, String keyWord) {
