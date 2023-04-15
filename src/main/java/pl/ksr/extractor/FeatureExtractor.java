@@ -21,7 +21,7 @@ public class FeatureExtractor {
     public List<FeatureVector> extractFeatures(List<Article> articleList) {
         Map<Article, FeatureVector> mapWhichKeepsOrder = new LinkedHashMap<>();
         articleList.forEach(article -> mapWhichKeepsOrder.put(article, null));
-        LOGGER.info("Starting Features Extraction of {} articles", articleList.size());
+        LOGGER.debug("Starting Features Extraction of {} articles", articleList.size());
 
         articleList.parallelStream().forEach(article -> {
             LOGGER.debug("Feature extraction for {}", article);
@@ -52,8 +52,7 @@ public class FeatureExtractor {
             });
             mapWhichKeepsOrder.put(article, new FeatureVector(features, Country.getCountry(article.getPlace())));
         });
-
-        LOGGER.info("Features Extraction Finished");
+        LOGGER.debug("Features Extraction Finished - Vectors size: {}", mapWhichKeepsOrder.size());
         return new LinkedList<>(mapWhichKeepsOrder.values());
     }
 
@@ -61,7 +60,7 @@ public class FeatureExtractor {
         List<Float> minValues = new ArrayList<>();
         List<Float> maxValues = new ArrayList<>();
 
-        LOGGER.info("Starting Features Normalization of {} feature vectors", featureVectorList.size());
+        LOGGER.debug("Starting Features Normalization of {} feature vectors", featureVectorList.size());
 
         // Get min and max value of each feature
         for (FeatureVector featureList : featureVectorList) {
@@ -101,7 +100,7 @@ public class FeatureExtractor {
             }
         }
 
-        LOGGER.info("Features Normalization Finished");
+        LOGGER.debug("Features Normalization Finished");
     }
 
     // 1. The country from which the currency appears first in the text

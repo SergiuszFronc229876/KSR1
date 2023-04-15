@@ -18,6 +18,7 @@ public interface AppConfig {
                 .neighbors(config.getInt("neighbors"))
                 .metric(BasicMetrics.getMetric(config.getString("metric").trim()))
                 .csvDir(config.getString("csvDir"))
+                .guiMode(config.getBoolean("guiMode"))
                 .build();
     }
 
@@ -32,4 +33,6 @@ public interface AppConfig {
     Metric metric();
 
     String csvDir();
+
+    Boolean guiMode();
 }

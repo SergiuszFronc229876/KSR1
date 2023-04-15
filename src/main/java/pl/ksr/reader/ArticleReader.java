@@ -46,7 +46,7 @@ public class ArticleReader {
                 }
             }
         }
-        LOGGER.info("Articles read: {}", articles.size());
+        LOGGER.debug("Articles read: {}", articles.size());
         return articles;
     }
 

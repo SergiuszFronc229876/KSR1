@@ -24,6 +24,10 @@ function setJavaOpts() {
     CSVDIR="$CWD/$1.csv"
     JAVA_OPTS="$JAVA_OPTS -DCSVDIR="$CSVDIR""
   fi
+  if ! [ -n "$GUIMODE" ]; then
+    #jesli nie jest ustawione to plik z wynikiem bedzie zapisany w tym samym folderze co plik konfiguracyjny
+    JAVA_OPTS="$JAVA_OPTS -DGUIMODE=false"
+  fi
 }
 
 if ! [ -n "$1" ]; then
