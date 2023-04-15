@@ -127,6 +127,8 @@ public class Main {
         });
         thread.start();
 
+        clearScreen();
+
         int i = 0;
         System.out.print("Oczekiwanie na skończenie klasyfikacji");
         while (thread.isAlive()) {
@@ -147,6 +149,7 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        clearScreen();
         classificationQuality(confusionMatrix.get(), config);
     }
 
@@ -172,6 +175,7 @@ public class Main {
 
         return confusionMatrix;
     }
+
     private static void classificationQuality(ConfusionMatrix confusionMatrix, AppConfig configuration) {
         List<String[]> csvData = new ArrayList<>();
 
@@ -222,5 +226,10 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

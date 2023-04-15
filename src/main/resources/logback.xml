@@ -12,4 +12,16 @@
         <appender-ref ref="FILE"/>
     </root>
 
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%msg%n%throwable</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.example" level="DEBUG"/>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+    </root>
+
 </configuration>
