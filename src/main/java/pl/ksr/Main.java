@@ -71,10 +71,11 @@ public class Main {
         try {
             if (trainingSetPercentage.isEmpty()) {
                 trainingSetPercentage = "50";
-            }
-            float val = Float.parseFloat(trainingSetPercentage);
-            if (val < 0 || val > 100) {
-                throw new IllegalStateException("Nieprawidłowa wartość procentu zbioru uczącego");
+            } else {
+                float val = Float.parseFloat(trainingSetPercentage);
+                if (val < 0 || val > 100) {
+                    throw new IllegalStateException("Nieprawidłowa wartość procentu zbioru uczącego");
+                }
             }
         } catch (NumberFormatException e) {
             throw new IllegalStateException("Nieprawidłowa wartość procentu zbioru uczącego");
