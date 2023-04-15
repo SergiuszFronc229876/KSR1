@@ -1,15 +1,15 @@
 <configuration>
-
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <timestamp key="myTimestamp" datePattern="yyyy-MM-dd'_'HH-mm-ss.SSS"/>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/log.${myTimestamp}.txt</file>
+        <append>true</append>
         <encoder>
             <pattern>%-5level [%d{HH:mm:ss.SSS}] [%thread] %logger{36} - %msg%n%throwable</pattern>
         </encoder>
     </appender>
 
-    <logger name="com.example" level="DEBUG"/>
-
-    <root level="INFO">
-        <appender-ref ref="console"/>
+    <root level="DEBUG">
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>

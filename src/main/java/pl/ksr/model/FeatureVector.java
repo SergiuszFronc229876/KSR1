@@ -34,6 +34,10 @@ public class FeatureVector implements Iterable<Feature> {
                 .toList();
     }
 
+    public List<Feature> getFeatureList() {
+        return featureList;
+    }
+
     public List<TextFeature> getTextFeatures() {
         return featureList.stream()
                 .filter(feature -> feature.getClass() == TextFeature.class)

@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import static pl.ksr.extractor.FeatureExtractorUtils.getWordsFromText;
 
 public class FeatureExtractor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FeatureExtractor.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(FeatureExtractor.class);
 
     private final FeatureExtractorConfig config;
 
@@ -24,7 +24,6 @@ public class FeatureExtractor {
         LOGGER.debug("Starting Features Extraction of {} articles", articleList.size());
 
         articleList.parallelStream().forEach(article -> {
-            LOGGER.debug("Feature extraction for {}", article);
             ArrayList<Feature> features = new ArrayList<>();
             config.features().forEach(f -> {
                 switch (f) {
@@ -50,7 +49,9 @@ public class FeatureExtractor {
                     }
                 }
             });
-            mapWhichKeepsOrder.put(article, new FeatureVector(features, Country.getCountry(article.getPlace())));
+            FeatureVector v = new FeatureVector(features, Country.getCountry(article.getPlace()));
+            LOGGER.debug("Adding to Article: {} a vector: {}", article, v.getFeatureList());
+            mapWhichKeepsOrder.put(article, v);
         });
         LOGGER.debug("Features Extraction Finished - Vectors size: {}", mapWhichKeepsOrder.size());
         return new LinkedList<>(mapWhichKeepsOrder.values());
@@ -198,7 +199,6 @@ public class FeatureExtractor {
             }
         }
 
-        LOGGER.debug("Number of city occurrences: {} for {}", occurrenceCount, country);
         return new NumericalFeature(occurrenceCount);
     }
 
@@ -217,7 +217,6 @@ public class FeatureExtractor {
             }
             result.put(entry.getKey(), (float) (countOccurrences / Arrays.stream(getWordsFromText(article)).count()));
         }
-        LOGGER.debug("Percentage of Famous People Appearing result is: {}", result);
 
         return result.entrySet()
                 .stream()
@@ -241,7 +240,6 @@ public class FeatureExtractor {
             }
             result.put(entry.getKey(), countOccurrences);
         }
-        LOGGER.debug("Currency occurrences result is: {}", result);
         return result.entrySet()
                 .stream()
                 .max(Map.Entry.comparingByValue())
@@ -273,7 +271,6 @@ public class FeatureExtractor {
             }
         }
 
-        LOGGER.debug("First occurring unit is: {}", unit);
         return new TextFeature(unit);
     }
 

@@ -29,9 +29,9 @@ import java.util.Scanner;
 import static com.typesafe.config.ConfigFactory.load;
 
 public class Main {
-    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
+        Logger LOG = LoggerFactory.getLogger(Main.class);
         long startTime = System.currentTimeMillis();
         AppConfig config = AppConfig.fromRootConfig(load());
 
