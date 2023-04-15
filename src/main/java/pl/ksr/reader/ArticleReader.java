@@ -7,6 +7,7 @@ import pl.ksr.model.Article;
 import pl.ksr.model.ImmutableArticle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +31,7 @@ public class ArticleReader {
     }
 
     private List<Article> getArticles(List<String> contentOfArticles) {
-        List<Article> articles = new ArrayList<>();
+        List<Article> articles = new LinkedList<>();
         String regex = "<REUTERS(.*?)</REUTERS>";
         Pattern pattern = Pattern.compile(regex);
 
@@ -85,15 +86,15 @@ public class ArticleReader {
     }
 
     private Article buildArticle(String articleInString, String place) {
-        List<String> wordsFromTitle = getWordList(articleInString, "<TITLE>(.*?)</TITLE>");
-        List<String> wordsFromBody = getWordList(articleInString, "<BODY>(.*?)</BODY>");
-        List<String> combined = Stream.concat(wordsFromTitle.stream(), wordsFromBody.stream())
-                .collect(Collectors.toList());
-        combined.removeAll(config.stopWords());
-        combined.removeIf(String::isEmpty);
+        List<String> text = new ArrayList<>(getWordList(articleInString, "<TEXT>(.*?)</TEXT>"));
+        text.removeAll(config.stopWords());
+        text.removeIf(String::isEmpty);
+
         return ImmutableArticle.builder()
                 .place(place)
-                .text(StringUtils.join(wordsFromBody, " ").replaceAll("<DATELINE>.*?</DATELINE>", " ").toLowerCase())
+                .text(StringUtils.join(text, " ").replaceAll("<DATELINE>.*?</DATELINE>", " ")
+                        .replaceAll("<.*?>", "")
+                        .toLowerCase())
                 .build();
     }
 }

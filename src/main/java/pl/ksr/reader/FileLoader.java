@@ -6,23 +6,22 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FileLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileLoader.class);
 
     public List<String> readFiles(String dirPaths) {
-        List<String> articleList = new ArrayList<>();
+        List<String> articleList = new LinkedList<>();
 
         List<File> files = Arrays.asList(getFilesList(new File(dirPaths)));
         files.parallelStream().forEach(file -> {
             try {
                 LOGGER.debug("Reading File: {}", file.getName());
-                synchronized (articleList) {
-                    articleList.add(readFile(file.getAbsolutePath()));
-                }
+                articleList.add(readFile(file.getAbsolutePath()));
+
             } catch (IOException e) {
                 LOGGER.error("Could not read files from given directory path: {}", dirPaths);
                 throw new RuntimeException(e);

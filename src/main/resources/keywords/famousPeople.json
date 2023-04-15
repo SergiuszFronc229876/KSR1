@@ -1,44 +1,44 @@
 {
   "west-germany": [
-    "Richard Von Weizsaecker",
-    "Helmut Kohl",
-    "Gerhard Stoltenberg",
-    "Martin Bangemann",
-    "Ignaz Kiechle"
+    "Weizsaecker",
+    "Kohl",
+    "Stoltenberg",
+    "Bangemann",
+    "Kiechle"
   ],
   "usa": [
-    "Ronald Reagan",
-    "James Baker",
-    "William Verity",
-    "John Herrington",
-    "Richard Lyng"
+    "Reagan",
+    "Baker",
+    "Verity",
+    "Herrington",
+    "Lyng"
   ],
   "france": [
-    "Francois Mitterrand",
-    "Jacques Chirac",
-    "Edouard Balladur",
-    "Francois Guillaume",
-    "Jacques de Larosiere"
+    "Mitterrand",
+    "Chirac",
+    "Balladur",
+    "Guillaume",
+    "Larosiere"
   ],
   "uk": [
-    "Margaret Thatcher",
-    "Nigel Lawson",
-    "Cecil Parkinson",
-    "Lord Young",
-    "Robin Leigh-Pemberton"
+    "Thatcher",
+    "Lawson",
+    "Parkinson",
+    "Young",
+    "Leigh-Pemberton"
   ],
   "canada": [
-    "Brian Mulroney",
-    "Nigel Lawson",
-    "Michael Wilson",
-    "Marcel Masse",
+    "Mulroney",
+    "Lawson",
+    "Wilson",
+    "Masse",
     "frow"
   ],
   "japan": [
-    "Noboru Takeshita",
-    "Yasuhiro Nakasone",
-    "Kiichi Miyazawa",
-    "Hajime Tamura",
-    "Eiichi Nakao"
+    "Takeshita",
+    "Nakasone",
+    "Miyazawa",
+    "Tamura",
+    "Nakao"
   ]
 }

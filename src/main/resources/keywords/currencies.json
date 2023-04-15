@@ -2,37 +2,40 @@
   "west-germany": [
     "DEM",
     "mark",
+    "marks",
     "deutschmark",
-    "D-Mark",
     "DMK"
   ],
   "usa": [
     "USD",
     "dlrs",
-    "united states dollar",
-    "U.S. Dollar",
+    "dlr",
+    "dollar",
+    "dollars",
     "DLR"
   ],
   "france": [
-    "F",
     "franc",
-    "french franc",
+    "francs",
     "FFR"
   ],
   "uk": [
     "pound",
+    "pounds",
     "GBP",
     "STG"
   ],
   "canada": [
     "canadian dollar",
-    "CAD",
+    "canadian dollars",
+    "Canadian dlr",
     "Canadian dlrs",
-    "CAN"
+    "CAD"
   ],
   "japan": [
-    "yen",
+    "oup",
     "JPY",
-    "Japanese Yen"
+    "yen",
+    "yens"
   ]
 }

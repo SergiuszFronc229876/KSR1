@@ -19,11 +19,12 @@ public class FeatureExtractor {
     }
 
     public List<FeatureVector> extractFeatures(List<Article> articleList) {
-        List<FeatureVector> syncFeatureVectors = Collections.synchronizedList(new ArrayList<>());
+        Map<Article, FeatureVector> mapWhichKeepsOrder = new LinkedHashMap<>();
+        articleList.forEach(article -> mapWhichKeepsOrder.put(article, null));
         LOGGER.info("Starting Features Extraction of {} articles", articleList.size());
 
-
         articleList.parallelStream().forEach(article -> {
+            LOGGER.debug("Feature extraction for {}", article);
             ArrayList<Feature> features = new ArrayList<>();
             config.features().forEach(f -> {
                 switch (f) {
@@ -49,11 +50,11 @@ public class FeatureExtractor {
                     }
                 }
             });
-            syncFeatureVectors.add(new FeatureVector(features, Country.getCountry(article.getPlace())));
+            mapWhichKeepsOrder.put(article, new FeatureVector(features, Country.getCountry(article.getPlace())));
         });
 
         LOGGER.info("Features Extraction Finished");
-        return syncFeatureVectors;
+        return new LinkedList<>(mapWhichKeepsOrder.values());
     }
 
     public void normaliseFeatures(List<FeatureVector> featureVectorList) {

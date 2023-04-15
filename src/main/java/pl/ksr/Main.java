@@ -1,11 +1,10 @@
 package pl.ksr;
 
 import com.opencsv.CSVWriter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.ksr.extractor.FeatureExtractor;
-import pl.ksr.extractor.FeatureExtractorConfig;
-import pl.ksr.extractor.ImmutableFeatureExtractorConfig;
 import pl.ksr.metric.Metric;
 import pl.ksr.model.Article;
 import pl.ksr.model.Country;
@@ -17,7 +16,6 @@ import pl.ksr.reader.ArticleReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +28,7 @@ public class Main {
         long startTime = System.currentTimeMillis();
 
         AppConfig configuration = AppConfig.fromRootConfig(load());
-
-        FeatureExtractorConfig guiExtractorConfig = ImmutableFeatureExtractorConfig.copyOf(configuration.featureExtractorConfig()).withFeatures(List.of(1, 2, 3));
-        ImmutableAppConfig guiConfig = ImmutableAppConfig.copyOf(configuration).withPercentageOfTheTrainingSet(10f).withFeatureExtractorConfig(guiExtractorConfig);
-
+        LOG.debug("Config: {}", configuration);
 
         ArticleReader reader = new ArticleReader(configuration.readerConfig());
         FeatureExtractor featureExtractor = new FeatureExtractor(configuration.featureExtractorConfig());
@@ -53,50 +48,42 @@ public class Main {
             confusionMatrix.add(vector.getCountry(), predictedCountry);
         });
 
-        String[] header = {"Accuracy", "Precision", "PrecisionUsa", "PrecisionJapan", "PrecisionWestGermany", "PrecisionCanada", "PrecisionUK", "PrecisionFrance",
-                "Recall", "RecallUsa", "RecallJapan", "RecallWestGermany", "RecallCanada", "RecallUK", "RecallFrance",
-                "F1", "F1Usa", "F1Japan", "F1WestGermany", "F1Canada", "F1UK", "F1France"};
         List<String[]> csvData = new ArrayList<>();
-        csvData.add(header);
-        List<String> toSave = new ArrayList<>();
-
-        DecimalFormat df = new DecimalFormat("0.00");
 
         double accuracy = ClassificationQuality.calculateAccuracy(confusionMatrix);
-        toSave.add(Double.toString(accuracy));
+        csvData.add(new String[]{"Accuracy", Double.toString(accuracy)});
         LOG.info("Accuracy – dla całego zbioru dokumentów:  {}", accuracy);
 
         double precisionForAll = ClassificationQuality.calculatePrecision(confusionMatrix);
-        toSave.add(Double.toString(precisionForAll));
-
+        csvData.add(new String[]{"Precision", Double.toString(precisionForAll)});
         LOG.info("Precision – dla całego zbioru dokumentów: {}", precisionForAll);
 
         for (Country c : configuration.readerConfig().places()) {
             double precision = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
-            toSave.add(Double.toString(precision));
+            csvData.add(new String[]{String.format("Precision %s", StringUtils.capitalize(c.getCountryString())), Double.toString(precision)});
             LOG.info("Precision – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), precision);
         }
 
 
         double recallForAll = ClassificationQuality.calculateRecall(confusionMatrix);
-        toSave.add(Double.toString(recallForAll));
+        csvData.add(new String[]{"Recall", Double.toString(recallForAll)});
         LOG.info("Recall – dla całego zbioru dokumentów oraz dla wybranych klas: {}", recallForAll);
 
 
         for (Country c : configuration.readerConfig().places()) {
             double recall = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
-            toSave.add(Double.toString(recall));
+            csvData.add(new String[]{String.format("Recall %s", StringUtils.capitalize(c.getCountryString())), Double.toString(recall)});
             LOG.info("Recall – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), recall);
         }
 
 
         for (Country c : configuration.readerConfig().places()) {
             double f1 = ClassificationQuality.calculateF1ForCountry(confusionMatrix, c);
-            toSave.add(Double.toString(f1));
+            csvData.add(new String[]{String.format("F1 %s", StringUtils.capitalize(c.getCountryString())), Double.toString(f1)});
             LOG.info("Miara F1 – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), f1);
         }
         double f1ForAll = ClassificationQuality.calculateF1(confusionMatrix);
-        toSave.add(Double.toString(f1ForAll));
+        csvData.add(new String[]{"F1", Double.toString(f1ForAll)});
         LOG.info("Miara F1 – dla całego zbioru dokumentów oraz dla wybranych klas: {}", f1ForAll);
 
         long stopTime = System.currentTimeMillis();
@@ -104,9 +91,9 @@ public class Main {
 
         File file = new File(configuration.csvDir());
         file.getParentFile().mkdirs();
-        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
-            csvData.add(toSave.toArray(String[]::new));
-            writer.writeAll(csvData);
+        try (CSVWriter writer = new CSVWriter(new FileWriter(file), ';', CSVWriter.NO_QUOTE_CHARACTER,
+                CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+            writer.writeAll(csvData, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

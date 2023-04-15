@@ -35,7 +35,7 @@ public class FeatureExtractorTest {
     @Test
     public void featureExtractionBeforeNormalisationTest() {
         List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
-        FeatureVector vector1 = featureVectors.get(1);
+        FeatureVector vector1 = featureVectors.get(0);
 
 
         assertEquals("usa", ((TextFeature) vector1.getFeature(0)).getValue()); // 1
@@ -52,7 +52,7 @@ public class FeatureExtractorTest {
 
         assertEquals("usa", ((TextFeature) vector1.getFeature(10)).getValue()); // 6
         assertEquals("usa", ((TextFeature) vector1.getFeature(11)).getValue()); // 7
-        assertEquals(43, ((NumericalFeature) vector1.getFeature(12)).getValue()); // 8
+        assertEquals(40, ((NumericalFeature) vector1.getFeature(12)).getValue()); // 8
         assertEquals("inch", ((TextFeature) vector1.getFeature(13)).getValue()); // 9
 
         assertEquals(3, ((NumericalFeature) vector1.getFeature(14)).getValue()); // 10_M
@@ -60,30 +60,11 @@ public class FeatureExtractorTest {
     }
 
     @Test
-    public void featureExtractionWithout5and10Features() {
-        FeatureExtractorConfig featureExtractorConfig = anyFeatureExtractorConfigWithGivenFeatures(List.of(1, 2, 3, 4, 6, 7, 8, 9));
-        this.featureExtractor = new FeatureExtractor(featureExtractorConfig);
-        List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
-        FeatureVector vector1 = featureVectors.get(1);
-
-        assertEquals("usa", ((TextFeature) vector1.getFeature(0)).getValue()); // 1
-        assertEquals("usa", ((TextFeature) vector1.getFeature(1)).getValue()); // 2
-        assertEquals("usa", ((TextFeature) vector1.getFeature(2)).getValue()); // 3
-        assertEquals("usa", ((TextFeature) vector1.getFeature(3)).getValue()); // 4
-
-        assertEquals("usa", ((TextFeature) vector1.getFeature(4)).getValue()); // 6
-        assertEquals("usa", ((TextFeature) vector1.getFeature(5)).getValue()); // 7
-        assertEquals(43, ((NumericalFeature) vector1.getFeature(6)).getValue()); // 8
-        assertEquals("inch", ((TextFeature) vector1.getFeature(7)).getValue()); // 9
-    }
-
-
-    @Test
     public void featureExtractionAfterNormalisationTest() {
         List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
         featureExtractor.normaliseFeatures(featureVectors);
 
-        FeatureVector vector1 = featureVectors.get(1);
+        FeatureVector vector1 = featureVectors.get(0);
         assertEquals("usa", ((TextFeature) vector1.getFeature(0)).getValue()); // 1
         assertEquals("usa", ((TextFeature) vector1.getFeature(1)).getValue()); // 2
         assertEquals("usa", ((TextFeature) vector1.getFeature(2)).getValue()); // 3
@@ -103,6 +84,24 @@ public class FeatureExtractorTest {
 
 //        assertEquals(4, ((NumericalFeature)vector1.getFeature(14)).getValue()); // 10_M
 //        assertEquals(3, ((NumericalFeature)vector1.getFeature(15)).getValue()); // 10_I
+    }
+
+    @Test
+    public void featureExtractionWithout5and10Features() {
+        FeatureExtractorConfig extractorConfig = anyFeatureExtractorConfigWithGivenFeatures(List.of(1, 2, 3, 4, 6, 7, 8, 9));
+        FeatureExtractor extractor = new FeatureExtractor(extractorConfig);
+        List<FeatureVector> vectors = extractor.extractFeatures(articles);
+        FeatureVector vector1 = vectors.get(0);
+
+        assertEquals("usa", ((TextFeature) vector1.getFeature(0)).getValue()); // 1
+        assertEquals("usa", ((TextFeature) vector1.getFeature(1)).getValue()); // 2
+        assertEquals("usa", ((TextFeature) vector1.getFeature(2)).getValue()); // 3
+        assertEquals("usa", ((TextFeature) vector1.getFeature(3)).getValue()); // 4
+
+        assertEquals("usa", ((TextFeature) vector1.getFeature(4)).getValue()); // 6
+        assertEquals("usa", ((TextFeature) vector1.getFeature(5)).getValue()); // 7
+        assertEquals(40, ((NumericalFeature) vector1.getFeature(6)).getValue()); // 8
+        assertEquals("inch", ((TextFeature) vector1.getFeature(7)).getValue()); // 9
     }
 
     private FeatureExtractorConfig anyFeatureExtractorConfigWithGivenFeatures(List<Integer> list) {

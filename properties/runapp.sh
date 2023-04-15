@@ -14,6 +14,10 @@ function setJavaOpts() {
     JAVA_OPTS="$JAVA_OPTS -DMETRIC=$METRIC"
   fi
 
+  if [ -n "$FEATURES" ]; then
+    JAVA_OPTS="$JAVA_OPTS -DFEATURES=$FEATURES"
+  fi
+
   if ! [ -n "$CSVDIR" ]; then
     #jesli nie jest ustawione to plik z wynikiem bedzie zapisany w tym samym folderze co plik konfiguracyjny
     CWD=$(pwd)
