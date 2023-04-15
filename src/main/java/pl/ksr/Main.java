@@ -25,14 +25,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.typesafe.config.ConfigFactory.load;
 
 public class Main {
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
+
+    private static long startTime;
 
     public static void main(String[] args) {
         Logger LOG = LoggerFactory.getLogger(Main.class);
-        long startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
+
         AppConfig config = AppConfig.fromRootConfig(load());
 
         if (config.guiMode()) {
@@ -114,25 +119,60 @@ public class Main {
 
         LOG.debug("Config: {}", config);
 
-        ArticleReader reader = new ArticleReader(config.readerConfig());
-        FeatureExtractor featureExtractor = new FeatureExtractor(config.featureExtractorConfig());
+        AtomicReference<ConfusionMatrix> confusionMatrix = new AtomicReference<>();
+
+        AppConfig finalConfig = config;
+        Thread thread = new Thread(() -> {
+            confusionMatrix.set(process(finalConfig));
+        });
+        thread.start();
+
+        int i = 0;
+        System.out.print("Oczekiwanie na skończenie klasyfikacji");
+        while (thread.isAlive()) {
+            try {
+                Thread.sleep(500);
+                i++;
+                System.out.print(".");
+                if (i % 4 == 0) {
+                    System.out.print("\b\b\b\b    \b\b\b\b");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("\n\n");
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        classificationQuality(confusionMatrix.get(), config);
+    }
+
+    private static ConfusionMatrix process(AppConfig configuration) {
+        ArticleReader reader = new ArticleReader(configuration.readerConfig());
+        FeatureExtractor featureExtractor = new FeatureExtractor(configuration.featureExtractorConfig());
 
         List<Article> articles = reader.getArticles();
         List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
         featureExtractor.normaliseFeatures(featureVectors);
 
-        List<FeatureVector> trainingVectors = featureVectors.subList(0, (int) (config.percentageOfTheTrainingSet() * featureVectors.size()));
+        List<FeatureVector> trainingVectors = featureVectors.subList(0, (int) (configuration.percentageOfTheTrainingSet() * featureVectors.size()));
         List<FeatureVector> testVectors = featureVectors.subList(trainingVectors.size(), featureVectors.size());
-        Metric metric = config.metric();
-        ConfusionMatrix confusionMatrix = new ConfusionMatrix(config.readerConfig().places().size());
+        Metric metric = configuration.metric();
+        ConfusionMatrix confusionMatrix = new ConfusionMatrix(configuration.readerConfig().places().size());
 
 
-        int neighbors = config.neighbors();
+        int neighbors = configuration.neighbors();
         testVectors.parallelStream().forEach(vector -> {
             Country predictedCountry = KNN.classify(neighbors, vector, trainingVectors, metric);
             confusionMatrix.add(vector.getCountry(), predictedCountry);
         });
 
+        return confusionMatrix;
+    }
+    private static void classificationQuality(ConfusionMatrix confusionMatrix, AppConfig configuration) {
         List<String[]> csvData = new ArrayList<>();
 
         double accuracy = ClassificationQuality.calculateAccuracy(confusionMatrix);
@@ -143,7 +183,7 @@ public class Main {
         csvData.add(new String[]{"Precision", Double.toString(precisionForAll)});
         LOG.info("Precision – dla całego zbioru dokumentów: {}", precisionForAll);
 
-        for (Country c : config.readerConfig().places()) {
+        for (Country c : configuration.readerConfig().places()) {
             double precision = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
             csvData.add(new String[]{String.format("Precision %s", StringUtils.capitalize(c.getCountryString())), Double.toString(precision)});
             LOG.info("Precision – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), precision);
@@ -155,14 +195,14 @@ public class Main {
         LOG.info("Recall – dla całego zbioru dokumentów oraz dla wybranych klas: {}", recallForAll);
 
 
-        for (Country c : config.readerConfig().places()) {
+        for (Country c : configuration.readerConfig().places()) {
             double recall = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
             csvData.add(new String[]{String.format("Recall %s", StringUtils.capitalize(c.getCountryString())), Double.toString(recall)});
             LOG.info("Recall – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), recall);
         }
 
 
-        for (Country c : config.readerConfig().places()) {
+        for (Country c : configuration.readerConfig().places()) {
             double f1 = ClassificationQuality.calculateF1ForCountry(confusionMatrix, c);
             csvData.add(new String[]{String.format("F1 %s", StringUtils.capitalize(c.getCountryString())), Double.toString(f1)});
             LOG.info("Miara F1 – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), f1);
@@ -174,7 +214,7 @@ public class Main {
         long stopTime = System.currentTimeMillis();
         System.out.println("Time elapsed: " + (stopTime - startTime) / 1000f + " s");
 
-        File file = new File(config.csvDir());
+        File file = new File(configuration.csvDir());
         file.getParentFile().mkdirs();
         try (CSVWriter writer = new CSVWriter(new FileWriter(file), ';', CSVWriter.NO_QUOTE_CHARACTER,
                 CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
