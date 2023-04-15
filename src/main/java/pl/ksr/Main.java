@@ -59,6 +59,6 @@ public class Main {
         LOG.info("Miara F1 – dla całego zbioru dokumentów oraz dla wybranych klas: {}", ClassificationQuality.calculateF1(confusionMatrix));
 
         long stopTime = System.currentTimeMillis();
-        System.out.println("Time elapsed: " + (stopTime - startTime) / 1000 + " s");
+        System.out.println("Time elapsed: " + (stopTime - startTime) / 1000f + " s");
     }
 }
