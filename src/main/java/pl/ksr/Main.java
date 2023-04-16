@@ -35,11 +35,9 @@ public class Main {
     private static long startTime;
 
     public static void main(String[] args) {
-        Logger LOG = LoggerFactory.getLogger(Main.class);
         startTime = System.currentTimeMillis();
 
         AppConfig config = AppConfig.fromRootConfig(load());
-
         if (config.guiMode()) {
             Scanner scanner = new Scanner(System.in);
 
@@ -226,6 +224,7 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        LOG.debug("Wyniki zapisane do: {}", file.getAbsolutePath());
     }
 
     public static void clearScreen() {

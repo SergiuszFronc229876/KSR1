@@ -22,7 +22,6 @@ public class ArticleReader {
 
     public ArticleReader(ArticleReaderConfig config) {
         this.config = config;
-
     }
 
     public List<Article> getArticles() {

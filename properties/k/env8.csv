@@ -1,0 +1,22 @@
+Accuracy;0.87
+Precision;0.87
+Precision Usa;0.98
+Precision Japan;0.4
+Precision West-germany;0.48
+Precision Canada;0.34
+Precision Uk;0.5
+Precision France;0.43
+Recall;0.87
+Recall Usa;0.98
+Recall Japan;0.4
+Recall West-germany;0.48
+Recall Canada;0.34
+Recall Uk;0.5
+Recall France;0.43
+F1 Usa;0.92
+F1 Japan;0.55
+F1 West-germany;0.61
+F1 Canada;0.49
+F1 Uk;0.6
+F1 France;0.59
+F1;0.85

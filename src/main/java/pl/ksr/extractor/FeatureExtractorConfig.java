@@ -16,7 +16,7 @@ public interface FeatureExtractorConfig {
                 .companyDictionary(new Dictionary(JsonReader.readJsonIntoMap(config.getString("dictionaries.company-dir"))))
                 .namesDictionary(new Dictionary(JsonReader.readJsonIntoMap(config.getString("dictionaries.names-dir"))))
                 .measurementUnitsDictionary(new Dictionary(JsonReader.readJsonIntoMap(config.getString("dictionaries.units-dir"))))
-                .features(config.getStringList("features").stream().map(Integer::valueOf).toList())
+                .features(JsonReader.readStringToArray(config.getString("features")))
                 .build();
     }
 

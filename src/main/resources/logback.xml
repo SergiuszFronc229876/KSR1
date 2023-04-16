@@ -8,20 +8,22 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="FILE"/>
-    </root>
-
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%msg%n%throwable</pattern>
         </encoder>
     </appender>
 
-    <logger name="com.example" level="DEBUG"/>
+    <logger name="pl.ksr.extractor" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+    <logger name="pl.ksr.reader" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
 
     <root level="INFO">
-        <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 </configuration>

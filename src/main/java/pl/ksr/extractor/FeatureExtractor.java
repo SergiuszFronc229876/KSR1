@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import static pl.ksr.extractor.FeatureExtractorUtils.getWordsFromText;
 
 public class FeatureExtractor {
-    private final Logger LOGGER = LoggerFactory.getLogger(FeatureExtractor.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(FeatureExtractor.class);
 
     private final FeatureExtractorConfig config;
 
