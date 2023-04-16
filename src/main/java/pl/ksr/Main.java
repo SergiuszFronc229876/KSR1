@@ -2,6 +2,7 @@ package pl.ksr;
 
 import com.opencsv.CSVWriter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.ksr.extractor.FeatureExtractor;
@@ -32,10 +33,18 @@ public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
-
         AppConfig config = AppConfig.fromRootConfig(load());
         if (config.guiMode()) {
+
+            System.out.println("""
+                    ================================================================
+                    Program do klasyfikacji zbioru dokumentów tekstowych metodą k-N.
+                    Autorzy:
+                     Sergiusz Fronc 229876
+                     Patryk Nowacki 229970
+                    ================================================================
+                    """);
+
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("""
@@ -132,6 +141,7 @@ public class Main {
         });
         thread.start();
 
+        long startTime = System.currentTimeMillis();
         ArticleReader reader = new ArticleReader(config.readerConfig());
         FeatureExtractor featureExtractor = new FeatureExtractor(config.featureExtractorConfig());
 
@@ -158,42 +168,43 @@ public class Main {
 
         double accuracy = ClassificationQuality.calculateAccuracy(confusionMatrix);
         csvData.add(new String[]{"Accuracy", Double.toString(accuracy)});
-        LOG.info("Accuracy – dla całego zbioru dokumentów:  {}", accuracy);
+        LOG.info("Wartość Accuracy dla wszystkich klas: {}", accuracy);
+        System.out.println("--------------------------------------------");
 
-        double precisionForAll = ClassificationQuality.calculatePrecision(confusionMatrix);
-        csvData.add(new String[]{"Precision", Double.toString(precisionForAll)});
-        LOG.info("Precision – dla całego zbioru dokumentów: {}", precisionForAll);
-
+        LOG.info("Wartość Precision dla klas:");
         for (Country c : config.readerConfig().places()) {
             double precision = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
             csvData.add(new String[]{String.format("Precision %s", StringUtils.capitalize(c.getCountryString())), Double.toString(precision)});
-            LOG.info("Precision – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), precision);
+            LOG.info(" - {}: {}", c.getCountryString(), precision);
         }
+        double precisionForAll = ClassificationQuality.calculatePrecision(confusionMatrix);
+        csvData.add(new String[]{"Precision", Double.toString(precisionForAll)});
+        LOG.info("Dla wszystkich krajów: {}", precisionForAll);
+        LOG.info("--------------------------------------------");
 
-
-        double recallForAll = ClassificationQuality.calculateRecall(confusionMatrix);
-        csvData.add(new String[]{"Recall", Double.toString(recallForAll)});
-        LOG.info("Recall – dla całego zbioru dokumentów oraz dla wybranych klas: {}", recallForAll);
-
-
+        LOG.info("Wartość Recall dla klas:");
         for (Country c : config.readerConfig().places()) {
             double recall = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
             csvData.add(new String[]{String.format("Recall %s", StringUtils.capitalize(c.getCountryString())), Double.toString(recall)});
-            LOG.info("Recall – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), recall);
+            LOG.info(" - {}: {}", c.getCountryString(), recall);
         }
+        double recallForAll = ClassificationQuality.calculateRecall(confusionMatrix);
+        csvData.add(new String[]{"Recall", Double.toString(recallForAll)});
+        LOG.info("Dla wszystkich klas: {}", recallForAll);
+        LOG.info("--------------------------------------------");
 
-
+        LOG.info("Wartość F1 dla klas:");
         for (Country c : config.readerConfig().places()) {
             double f1 = ClassificationQuality.calculateF1ForCountry(confusionMatrix, c);
             csvData.add(new String[]{String.format("F1 %s", StringUtils.capitalize(c.getCountryString())), Double.toString(f1)});
-            LOG.info("Miara F1 – dla zbioru dokumentów z kraju {} wynosi: {}", c.getCountryString(), f1);
+            LOG.info(" - {}: {}", c.getCountryString(), f1);
         }
         double f1ForAll = ClassificationQuality.calculateF1(confusionMatrix);
         csvData.add(new String[]{"F1", Double.toString(f1ForAll)});
-        LOG.info("Miara F1 – dla całego zbioru dokumentów oraz dla wybranych klas: {}", f1ForAll);
+        LOG.info("Dla wszystkich klas: {}", f1ForAll);
 
         long stopTime = System.currentTimeMillis();
-        System.out.println("Time elapsed: " + (stopTime - startTime) / 1000f + " s");
+        System.out.println("\nCzas przetwarzania: " + (stopTime - startTime) / 1000f + " s");
 
         File file = new File(config.csvDir());
         file.getParentFile().mkdirs();
