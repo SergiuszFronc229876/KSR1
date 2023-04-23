@@ -53,6 +53,10 @@ public class ClassificationQuality {
     }
 
     private static double roundResult(Double d) {
-        return new BigDecimal(d).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        try {
+            return new BigDecimal(d).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }
