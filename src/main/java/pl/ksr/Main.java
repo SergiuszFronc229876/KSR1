@@ -22,10 +22,8 @@ import pl.ksr.reader.ArticleReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.typesafe.config.ConfigFactory.load;
 
@@ -37,29 +35,19 @@ public class Main {
         if (config.guiMode()) {
 
             System.out.println("""
-                    ================================================================
-                    Program do klasyfikacji zbioru dokumentów tekstowych metodą k-N.
-                    Autorzy:
-                     Sergiusz Fronc 229876
-                     Patryk Nowacki 229970
-                    ================================================================
+                    ┌──────────────────────────────────────────────────────────────────────┐
+                    │                                                                      │
+                    │   Program do klasyfikacji zbioru dokumentów tekstowych metodą k-N.   │
+                    │   Autorzy:                                                           │
+                    │     Sergiusz Fronc 229876                                            │
+                    │     Patryk Nowacki 229970                                            │
+                    │                                                                      │
+                    └──────────────────────────────────────────────────────────────────────┘
                     """);
 
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("""
-                    Wybierz metrykę [Domyślnie euklidesowa]:
-                    1. Euklidesowa.
-                    2. Miejska.
-                    3. Czebyszewa""");
-
-            Metric _metric = switch (scanner.nextLine()) {
-                case "1", "" -> new EuclideanMetric();
-                case "2" -> new ManhattanMetric();
-                case "3" -> new ChebyshevMetric();
-                default -> throw new IllegalStateException("Nieprawidłowa wartość metryki.");
-            };
-
+             // PARAMETR K
             System.out.println("Podaj wartość k: [Domyślnie 5]");
             String k = scanner.nextLine();
             try {
@@ -75,6 +63,7 @@ public class Main {
                 throw new IllegalStateException("Nieprawidłowa wartość k");
             }
 
+            // ZBIÓR UCZĄCY
             System.out.println("Podaj jaki procent artykułów ma zostać wektorami uczącymi [Domyślnie 50%]:");
             String trainingSetPercentage = scanner.nextLine();
             try {
@@ -90,6 +79,7 @@ public class Main {
                 throw new IllegalStateException("Nieprawidłowa wartość procentu zbioru uczącego");
             }
 
+            // CECHY
             System.out.println("""
                     Podaj po przecinku numery cech które mają zostać wykorzystane [Domyślnie wszystkie]:
                      1. Kraj dla którego słowo kluczowe ze słownika walut wystąpi jako pierwsze.
@@ -111,6 +101,20 @@ public class Main {
                 }
             }
 
+            // METRYKA
+            System.out.println("""
+                    Wybierz metrykę [Domyślnie euklidesowa]:
+                    1. Euklidesowa.
+                    2. Miejska.
+                    3. Czebyszewa""");
+
+            Metric _metric = switch (scanner.nextLine()) {
+                case "1", "" -> new EuclideanMetric();
+                case "2" -> new ManhattanMetric();
+                case "3" -> new ChebyshevMetric();
+                default -> throw new IllegalStateException("Nieprawidłowa wartość metryki.");
+            };
+
             FeatureExtractorConfig guiExtractorConfig = ImmutableFeatureExtractorConfig.copyOf(config.featureExtractorConfig())
                     .withFeatures(Arrays.stream(features.split(",")).map(Integer::parseInt).toList());
 
@@ -125,7 +129,7 @@ public class Main {
 
         Thread thread = new Thread(() -> {
             int i = 0;
-            System.out.print("Oczekiwanie na skończenie klasyfikacji");
+            System.out.print("Oczekiwanie na skończenie wczytania artykułów");
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Thread.sleep(500);
@@ -146,6 +150,36 @@ public class Main {
         FeatureExtractor featureExtractor = new FeatureExtractor(config.featureExtractorConfig());
 
         List<Article> articles = reader.getArticles();
+        Map<String, Long> countedArticles = articles.stream().collect(Collectors.groupingBy(Article::getPlace, Collectors.counting()));
+
+        thread.interrupt();
+        System.out.println("\n");
+        LOG.info("Liczba artykułów z USA: {}", countedArticles.get("usa"));
+        LOG.info("Liczba artykułów z Japonii: {}", countedArticles.get("japan"));
+        LOG.info("Liczba artykułów z Zachodnich Niemiec: {}", countedArticles.get("west-germany"));
+        LOG.info("Liczba artykułów z Kanady: {}", countedArticles.get("canada"));
+        LOG.info("Liczba artykułów z UK: {}", countedArticles.get("uk"));
+        LOG.info("Liczba artykułów z Francji: {}", countedArticles.get("france"));
+        System.out.println("\n");
+
+        thread = new Thread(() -> {
+            int i = 0;
+            System.out.print("Oczekiwanie na skończenie klasyfikacji");
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Thread.sleep(500);
+                    i++;
+                    System.out.print(".");
+                    if (i % 4 == 0) {
+                        System.out.print("\b\b\b\b    \b\b\b\b");
+                    }
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        });
+        thread.start();
+
         List<FeatureVector> featureVectors = featureExtractor.extractFeatures(articles);
         featureExtractor.normaliseFeatures(featureVectors);
 
@@ -164,13 +198,17 @@ public class Main {
         thread.interrupt();
 
         List<String[]> csvData = new ArrayList<>();
-        System.out.println("\n\n");
+        System.out.println("\n");
 
+        drawConfusionMatrix(confusionMatrix);
+
+        // ACCURACY
         double accuracy = ClassificationQuality.calculateAccuracy(confusionMatrix);
         csvData.add(new String[]{"Accuracy", Double.toString(accuracy)});
         LOG.info("Wartość Accuracy dla wszystkich klas: {}", accuracy);
         System.out.println("--------------------------------------------");
 
+        // PRECISION
         LOG.info("Wartość Precision dla klas:");
         for (Country c : config.readerConfig().places()) {
             double precision = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
@@ -182,6 +220,7 @@ public class Main {
         LOG.info("Dla wszystkich krajów: {}", precisionForAll);
         LOG.info("--------------------------------------------");
 
+        // RECALL
         LOG.info("Wartość Recall dla klas:");
         for (Country c : config.readerConfig().places()) {
             double recall = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
@@ -193,6 +232,7 @@ public class Main {
         LOG.info("Dla wszystkich klas: {}", recallForAll);
         LOG.info("--------------------------------------------");
 
+        // F1
         LOG.info("Wartość F1 dla klas:");
         for (Country c : config.readerConfig().places()) {
             double f1 = ClassificationQuality.calculateF1ForCountry(confusionMatrix, c);
@@ -202,6 +242,7 @@ public class Main {
         double f1ForAll = ClassificationQuality.calculateF1(confusionMatrix);
         csvData.add(new String[]{"F1", Double.toString(f1ForAll)});
         LOG.info("Dla wszystkich klas: {}", f1ForAll);
+
 
         long stopTime = System.currentTimeMillis();
         System.out.println("\nCzas przetwarzania: " + (stopTime - startTime) / 1000f + " s");
@@ -215,5 +256,59 @@ public class Main {
             throw new RuntimeException(e);
         }
         LOG.debug("Wyniki zapisane do: {}", file.getAbsolutePath());
+    }
+
+    private static void drawConfusionMatrix(ConfusionMatrix matrix) {
+        int numCountries = Country.values().length;
+
+        // Determine column width based on the longest country code plus 2 characters
+        int colWidth = 5;
+        for (Country country : Country.values()) {
+            colWidth = Math.max(colWidth, country.getCode().length() + 2);
+        }
+
+        // Print confusion matrix top border
+        System.out.print("┌" + "─".repeat(colWidth));
+        for (int i = 0; i < numCountries; i++) {
+            System.out.print("┬" + "─".repeat(colWidth));
+        }
+        System.out.println("┐");
+
+        // Print confusion matrix headers
+        System.out.format("│%-" + colWidth + "s", " ");
+        for (int i = 0; i < numCountries; i++) {
+            System.out.format("│%-" + colWidth + "s", " " + Country.values()[i].getCode() + " ");
+        }
+        System.out.println("│");
+
+        // Print confusion matrix separator
+        System.out.print("├" + "─".repeat(colWidth));
+        for (int i = 0; i < numCountries; i++) {
+            System.out.print("┼" + "─".repeat(colWidth));
+        }
+        System.out.println("┤");
+
+        // Print confusion matrix data
+        for (int row = 0; row < matrix.getMatrix().length; row++) {
+            System.out.format("│%-" + colWidth + "s", " " + Country.values()[row].getCode() + " ");
+            for (int col = 0; col < matrix.getMatrix()[row].length; col++) {
+                System.out.format("│%" + (colWidth - 1) + "d ", matrix.getMatrix()[row][col]);
+            }
+            System.out.println("│");
+            if (row < matrix.getMatrix().length - 1) {
+                System.out.print("├" + "─".repeat(colWidth));
+                for (int i = 0; i < numCountries; i++) {
+                    System.out.print("┼" + "─".repeat(colWidth));
+                }
+                System.out.println("┤");
+            }
+        }
+
+        // Print confusion matrix bottom border
+        System.out.print("└" + "─".repeat(colWidth));
+        for (int i = 0; i < numCountries; i++) {
+            System.out.print("┴" + "─".repeat(colWidth));
+        }
+        System.out.println("┘");
     }
 }

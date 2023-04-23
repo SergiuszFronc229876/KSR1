@@ -64,4 +64,12 @@ public class ConfusionMatrix {
     public int getAllCount() {
         return allCount;
     }
+
+    public int getNumClasses() {
+        return numClasses;
+    }
+
+    public int[][] getMatrix() {
+        return matrix;
+    }
 }

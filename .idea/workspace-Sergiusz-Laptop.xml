@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b0ce2c4a-81ec-47c4-94da-b82e1358a85d" name="Changes" comment="Implement terminal UI">
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/ksr/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/ksr/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-011.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-012.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-013.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-014.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-015.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-016.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-017.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-018.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-019.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-020.sgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/articles/reut2-021.sgm" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NmY8sv1ANWF2u2rggGKKt3osuM" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/xbxbc/IdeaProjects/KSR1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Groovy&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\xbxbc\OneDrive - Politechnika Łódzka\Studia\Semestr 6\KSR\Projekt 1\KSR1\src\main\resources\keywords" />
+      <recent name="C:\Users\xbxbc\OneDrive - Politechnika Łódzka\Studia\Semestr 6\KSR\Projekt 1\KSR1\src\test\resources\articles" />
+      <recent name="C:\Users\xbxbc\OneDrive - Politechnika Łódzka\Studia\Semestr 6\KSR\Projekt 1\KSR1\src\test\resources" />
+      <recent name="C:\Users\xbxbc\OneDrive - Politechnika Łódzka\Studia\Semestr 6\KSR\Projekt 1\KSR1\src\main\resources\articles" />
+      <recent name="C:\Users\xbxbc\IdeaProjects\KSR1\src\main\resources\test-articles" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\xbxbc\IdeaProjects\KSR1\src\main\resources\keywords" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="pl.ksr.Main" />
+      <module name="KSR1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClassificationQualityTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="KSR1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.ksr.qualificationQuality.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.ksr" />
+      <option name="MAIN_CLASS_NAME" value="pl.ksr.ClassificationQualityTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConfusionMatrixTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="KSR1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.ksr.qualificationQuality.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.ksr" />
+      <option name="MAIN_CLASS_NAME" value="pl.ksr.ConfusionMatrixTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConfusionMatrixTest.testAddAndGetCounts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="KSR1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.ksr.qualificationQuality.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.ksr" />
+      <option name="MAIN_CLASS_NAME" value="pl.ksr.ConfusionMatrixTest" />
+      <option name="METHOD_NAME" value="testAddAndGetCounts" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FeatureExtractorTest.featureExtractionBeforeNormalisationTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="KSR1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.ksr.qualificationQuality.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.ksr" />
+      <option name="MAIN_CLASS_NAME" value="pl.ksr.FeatureExtractorTest" />
+      <option name="METHOD_NAME" value="featureExtractionBeforeNormalisationTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in KSR1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="KSR1" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="pl.ksr in KSR1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="KSR1" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/pl.ksr" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ClassificationQualityTest" />
+        <item itemvalue="JUnit.pl.ksr in KSR1" />
+        <item itemvalue="JUnit.java in KSR1" />
+        <item itemvalue="JUnit.ConfusionMatrixTest" />
+        <item itemvalue="JUnit.ConfusionMatrixTest.testAddAndGetCounts" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b0ce2c4a-81ec-47c4-94da-b82e1358a85d" name="Changes" comment="" />
+      <created>1680270573734</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1680270573734</updated>
+      <workItem from="1680270574302" duration="89000" />
+      <workItem from="1680270792126" duration="13000" />
+      <workItem from="1680270817638" duration="773000" />
+      <workItem from="1680272596111" duration="3979000" />
+      <workItem from="1680276619478" duration="1408000" />
+      <workItem from="1680278049091" duration="6102000" />
+      <workItem from="1680293070184" duration="731000" />
+      <workItem from="1680476637372" duration="5414000" />
+      <workItem from="1680690989554" duration="3010000" />
+      <workItem from="1680700966509" duration="16893000" />
+      <workItem from="1680770025952" duration="2981000" />
+      <workItem from="1680799268734" duration="4907000" />
+      <workItem from="1680890065116" duration="2986000" />
+      <workItem from="1680963796777" duration="6796000" />
+      <workItem from="1680984686542" duration="5195000" />
+      <workItem from="1681215410316" duration="180000" />
+      <workItem from="1681215646333" duration="22000" />
+      <workItem from="1681215676608" duration="1276000" />
+      <workItem from="1681216972725" duration="12370000" />
+      <workItem from="1681303648812" duration="7418000" />
+      <workItem from="1681419399798" duration="4975000" />
+      <workItem from="1681570684193" duration="24499000" />
+      <workItem from="1681597004351" duration="313000" />
+      <workItem from="1681597335124" duration="307000" />
+      <workItem from="1681654471994" duration="3597000" />
+      <workItem from="1681736140648" duration="935000" />
+    </task>
+    <task id="LOCAL-00001" summary="Implement FeatureVector">
+      <created>1680702608514</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1680702608514</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update to Java 17">
+      <created>1680704798595</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1680704798595</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Implement kNN algorithm">
+      <created>1680981350722</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1680981350722</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Use parallelStream in kNN method">
+      <created>1681218323085</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1681218323085</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Replace String with enum Country">
+      <created>1681221264050</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1681221264050</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Use parallelStream in kNN method">
+      <created>1681223127537</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1681223127537</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Replace String with enum Country">
+      <created>1681223169298</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1681223169298</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Add ConfusionMatrix and classification quality measures">
+      <created>1681309984677</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1681309984677</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Add ConfusionMatrix and classification quality measures">
+      <created>1681310082129</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1681310082129</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Add ConfusionMatrix and classification quality measures">
+      <created>1681310246449</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1681310246449</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Quick fix for tests">
+      <created>1681573577532</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1681573577532</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Implement terminal UI">
+      <created>1681587978513</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1681587978513</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Implement terminal UI">
+      <created>1681588150753</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1681588150753</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Implement terminal UI">
+      <created>1681588222007</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1681588222007</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Implement FeatureVector" />
+    <MESSAGE value="Update to Java 17" />
+    <MESSAGE value="Implement kNN algorithm" />
+    <MESSAGE value="Change null to empty string for empty features" />
+    <MESSAGE value="Use parallelStream in kNN method" />
+    <MESSAGE value="Replace String with enum Country" />
+    <MESSAGE value="Add ConfusionMatrix and classification quality measures" />
+    <MESSAGE value="Quick fix for tests" />
+    <MESSAGE value="Implement terminal UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement terminal UI" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/pl.ksr/FeatureExtractorTest.java</url>
+          <line>79</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pl/ksr/extractor/FeatureExtractorUtils.java</url>
+          <line>9</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pl/ksr/reader/ArticleReader.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="JUnit">
+        <watch expression="distances.entrySet().toArray()[0]" />
+      </configuration>
+      <configuration name="Application">
+        <watch expression="((ImmutableArticle)article).text" custom="pl.ksr.model.ImmutableArticle" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
