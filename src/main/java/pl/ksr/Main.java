@@ -223,7 +223,7 @@ public class Main {
         // RECALL
         LOG.info("Wartość Recall dla klas:");
         for (Country c : config.readerConfig().places()) {
-            double recall = ClassificationQuality.calculatePrecisionForCountry(confusionMatrix, c);
+            double recall = ClassificationQuality.calculateRecallForCountry(confusionMatrix, c);
             csvData.add(new String[]{String.format("Recall %s", StringUtils.capitalize(c.getCountryString())), Double.toString(recall)});
             LOG.info(" - {}: {}", c.getCountryString(), recall);
         }
