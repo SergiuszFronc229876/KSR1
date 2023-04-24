@@ -1,5 +1,8 @@
 package pl.ksr.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
@@ -9,6 +12,22 @@ public class FeatureVector implements Iterable<Feature> {
 
     private final List<Feature> featureList;
     private final Country country;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FeatureVector vector = (FeatureVector) o;
+
+        return new EqualsBuilder().append(featureList, vector.featureList).append(country, vector.country).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(featureList).append(country).toHashCode();
+    }
 
     public FeatureVector(List<Feature> featureList, Country country) {
         this.featureList = featureList;

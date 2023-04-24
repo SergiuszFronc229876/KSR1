@@ -1,6 +1,7 @@
 package pl.ksr;
 
 import pl.ksr.metric.Metric;
+import pl.ksr.model.Article;
 import pl.ksr.model.Country;
 import pl.ksr.model.FeatureVector;
 
@@ -13,7 +14,9 @@ public class KNN {
     public static Country classify(int k, FeatureVector vector, List<FeatureVector> teachingVectors, Metric metric) {
 
         // Calculate distances between the input vector and all the vectors in the teaching list
-        Map<FeatureVector, Float> distances = Collections.synchronizedMap(new LinkedHashMap<>());
+        Map<FeatureVector, Float> distances = new LinkedHashMap<>();
+        teachingVectors.forEach(f -> distances.put(f, null));
+
         teachingVectors.parallelStream().forEach(teachingVector -> {
             float distance = metric.calculateDistance(vector, teachingVector);
             distances.put(teachingVector, distance);
