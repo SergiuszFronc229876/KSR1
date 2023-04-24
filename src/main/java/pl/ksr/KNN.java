@@ -13,7 +13,7 @@ public class KNN {
     public static Country classify(int k, FeatureVector vector, List<FeatureVector> teachingVectors, Metric metric) {
 
         // Calculate distances between the input vector and all the vectors in the teaching list
-        ConcurrentMap<FeatureVector, Float> distances = new ConcurrentHashMap<>();
+        Map<FeatureVector, Float> distances = Collections.synchronizedMap(new LinkedHashMap<>());
         teachingVectors.parallelStream().forEach(teachingVector -> {
             float distance = metric.calculateDistance(vector, teachingVector);
             distances.put(teachingVector, distance);
