@@ -35,14 +35,14 @@ public class Main {
         if (config.guiMode()) {
 
             System.out.println("""
-                    ┌──────────────────────────────────────────────────────────────────────┐
-                    │                                                                      │
-                    │   Program do klasyfikacji zbioru dokumentów tekstowych metodą k-N.   │
-                    │   Autorzy:                                                           │
-                    │     Sergiusz Fronc 229876                                            │
-                    │     Patryk Nowacki 229970                                            │
-                    │                                                                      │
-                    └──────────────────────────────────────────────────────────────────────┘
+                    ┌───────────────────────────────────────────────────────────────────────┐
+                    │                                                                       │
+                    │   Program do klasyfikacji zbioru dokumentów tekstowych metodą k-NN.   │
+                    │   Autorzy:                                                            │
+                    │     Sergiusz Fronc 229876                                             │
+                    │     Patryk Nowacki 229970                                             │
+                    │                                                                       │
+                    └───────────────────────────────────────────────────────────────────────┘
                     """);
 
             Scanner scanner = new Scanner(System.in);
