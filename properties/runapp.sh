@@ -43,6 +43,15 @@ else
       CSVDIR=""
       cd properties
     done
+    for d in */ ; do
+       cd "$d"
+       time_stamp=$(date +%Y-%m-%d-%T)
+       folder_name=last_results_$(date +%Y-%m-%d-%T)
+       mkdir "${folder_name}"
+       cp *.csv ./$folder_name
+       cd ..
+    done
+
   else
     setJavaOpts $1
     cd ..

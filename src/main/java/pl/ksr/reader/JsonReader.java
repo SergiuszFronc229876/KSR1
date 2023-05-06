@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.List;
 public class JsonReader {
 
     public static HashMap<String, List<String>> readJsonIntoMap(String filePath) {
+        InputStream resourceAsStream = JsonReader.class.getResourceAsStream(filePath);
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(filePath);
         try {
-            return objectMapper.readValue(file, new TypeReference<HashMap<String, List<String>>>() {
+            return objectMapper.readValue(resourceAsStream, new TypeReference<HashMap<String, List<String>>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();

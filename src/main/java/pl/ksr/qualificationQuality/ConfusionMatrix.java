@@ -15,7 +15,7 @@ public class ConfusionMatrix {
         this.actualCountryCount = new int[numClasses];
     }
 
-    public void add(Country actual, Country predicted) {
+    public synchronized void add(Country actual, Country predicted) {
         matrix[actual.ordinal()][predicted.ordinal()]++;
         allCount++;
         actualCountryCount[actual.ordinal()]++;
@@ -26,7 +26,7 @@ public class ConfusionMatrix {
     }
 
     public int getTrueNegatives(Country country) {
-        int tn  = 0;
+        int tn = 0;
         for (int i = 0; i < numClasses; i++) {
             for (int j = 0; j < numClasses; j++) {
                 if (Country.values()[i] != country && Country.values()[j] != country) {

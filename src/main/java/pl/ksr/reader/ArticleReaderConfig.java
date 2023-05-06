@@ -11,7 +11,7 @@ public interface ArticleReaderConfig {
 
     static ArticleReaderConfig fromRootConfig(Config config) {
         return ImmutableArticleReaderConfig.builder()
-                .articlesDir(config.getString("articles-dir"))
+                .articlesDir(FileLoader.getUnzipedArticlesPath(config.getString("articles-zip")).toString())
                 .places(config.getStringList("places").stream().map(Country::getCountry).toList())
                 .stopWords(config.getStringList("stop-words"))
                 .build();
@@ -23,3 +23,4 @@ public interface ArticleReaderConfig {
 
     List<String> stopWords();
 }
+

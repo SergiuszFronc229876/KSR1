@@ -2,7 +2,6 @@ package pl.ksr;
 
 import com.opencsv.CSVWriter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.ksr.extractor.FeatureExtractor;
@@ -47,7 +46,7 @@ public class Main {
 
             Scanner scanner = new Scanner(System.in);
 
-             // PARAMETR K
+            // PARAMETR K
             System.out.println("Podaj wartość k: [Domyślnie 5]");
             String k = scanner.nextLine();
             try {
@@ -185,6 +184,7 @@ public class Main {
 
         List<FeatureVector> trainingVectors = featureVectors.subList(0, (int) (config.percentageOfTheTrainingSet() * featureVectors.size()));
         List<FeatureVector> testVectors = featureVectors.subList(trainingVectors.size(), featureVectors.size());
+
         Metric metric = config.metric();
         ConfusionMatrix confusionMatrix = new ConfusionMatrix(config.readerConfig().places().size());
 
