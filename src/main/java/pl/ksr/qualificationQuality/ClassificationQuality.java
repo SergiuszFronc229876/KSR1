@@ -54,8 +54,7 @@ public class ClassificationQuality {
 
     private static double roundResult(Double d) {
         try {
-            double v = new BigDecimal(d).setScale(2, RoundingMode.HALF_UP).doubleValue();
-            return d;
+            return new BigDecimal(d).setScale(2, RoundingMode.HALF_UP).doubleValue();
         } catch (NumberFormatException e) {
             return 0;
         }
