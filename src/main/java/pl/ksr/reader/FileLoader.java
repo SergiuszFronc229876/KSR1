@@ -19,6 +19,7 @@ public class FileLoader {
     public List<String> readFiles(String dirPaths) {
         File filesDir = new File(dirPaths);
         List<File> files = Arrays.asList(getFilesList(filesDir));
+        Collections.sort(files);
         Map<File, String> mapWhichKeepsOrder = new LinkedHashMap<>();
         files.forEach(file -> mapWhichKeepsOrder.put(file, null));
         files.parallelStream().forEach(file -> {
